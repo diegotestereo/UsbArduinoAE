@@ -68,7 +68,7 @@ public class MainActivity extends ActionBarActivity implements Runnable{
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if(textIn.getText().toString().equals("1")){
+                                if(textIn.getText().toString().equals("A")){
                                 textAlarma1.setText("1");
                                     mp.start();
                                 }else{textAlarma1.setText("0");
@@ -274,21 +274,17 @@ public class MainActivity extends ActionBarActivity implements Runnable{
         while (true) {
             request.queue(buffer, 1);
             if (usbDeviceConnection.requestWait() == request) {
-                byte dataRx = buffer.get(0);
+                 final char dataRx = (char) buffer.get(0);
                 Log.d(TAG, "dataRx: " + dataRx);
-                if(dataRx!=IGNORE_00){
-
-                    stringToRx += (char)dataRx;
+                    //  stringToRx = dataRx;
                     runOnUiThread(new Runnable(){
 
                         @Override
                         public void run() {
-                            textIn.setText(stringToRx);
+                            textIn.setText("IN:"+dataRx+"-");
                         }});
                 }
-            } else {
-                break;
-            }
+
         }
 
 
