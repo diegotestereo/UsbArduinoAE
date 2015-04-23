@@ -36,9 +36,9 @@ public class MainActivity extends ActionBarActivity implements Runnable{
     private static final int CMD_TEXT = 3;
     private static final int MAX_TEXT_LENGTH = 16;
 
-    ToggleButton buttonLed;
+    ToggleButton buttonLed,toogleAlarma;
     EditText textOut;
-    Button buttonSend;
+    Button buttonSend,buttonSonido;
     TextView textIn,textAlarma1;
 
     String stringToRx;
@@ -49,42 +49,69 @@ public class MainActivity extends ActionBarActivity implements Runnable{
     private UsbInterface usbInterfaceFound = null;
     private UsbEndpoint endpointOut = null;
     private UsbEndpoint endpointIn = null;
-    private Thread RX;
-    private  MediaPlayer mp ;
+    private Thread RX,Audio;
+    private MediaPlayer mp1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mp = MediaPlayer.create(this, R.raw.intrusion);
+
+        mp1 = MediaPlayer.create(this, R.raw.intrusion);
+
 
         LevantarXML();
+        Botones();
+
+
+
 
         RX=new Thread( new Runnable() {
             @Override
             public void run() {
                 while(true){
-                    try {
-                        Thread.sleep(1000);
+                   try {
+                      Thread.sleep(100);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 if(textIn.getText().toString().equals("A")){
                                 textAlarma1.setText("1");
-                                    mp.start();
-                                }else{textAlarma1.setText("0");
-                                    mp.stop();}
+                                    mp1.start();
+                                /*    try {
+                                        Thread.sleep(2000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }*/
+                                }else{textAlarma1.setText("-");
+                                    mp1.stop();
+                                }
                             }
                         });
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }
+                   }
 
                 }
             }
         });
-        RX.start();
+ //      RX.start();
 
+
+        usbManager = (UsbManager)getSystemService(Context.USB_SERVICE);
+    }
+
+    private void Botones() {
+
+
+        buttonSonido.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mp1.start();
+
+            }
+        });
 
 
         buttonLed.setOnCheckedChangeListener(new OnCheckedChangeListener(){
@@ -113,13 +140,23 @@ public class MainActivity extends ActionBarActivity implements Runnable{
                                 @Override
                                 public void run() {
                                     sendArduinoText(textToSend);
+
                                 }});
                     threadsendArduinoText.start();
                 }
 
             }});
+        toogleAlarma.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    textIn.setText("A");
+                }else{
+                    textIn.setText("-");
+                }
+            }
+        });
 
-        usbManager = (UsbManager)getSystemService(Context.USB_SERVICE);
     }
 
     private void LevantarXML() {
@@ -128,6 +165,8 @@ public class MainActivity extends ActionBarActivity implements Runnable{
         textIn = (TextView)findViewById(R.id.textin);
         buttonSend = (Button)findViewById(R.id.send);
         buttonLed = (ToggleButton)findViewById(R.id.arduinoled);
+        toogleAlarma= (ToggleButton) findViewById(R.id.toggleAlarma);
+        buttonSonido= (Button)findViewById(R.id.btn_Sonido);
     }
 
     @Override
@@ -215,9 +254,12 @@ public class MainActivity extends ActionBarActivity implements Runnable{
         synchronized (this) {
 
             if (usbDeviceConnection != null) {
-                byte[] message = new byte[2];
-                message[0] = SYNC_WORD;
-                message[1] = (byte)control;
+                byte[] message = new byte[1];
+            //    byte message = (byte)control;
+                message[0] = (byte)control;
+
+            //    message[0] = SYNC_WORD;
+             //   message[1] = (byte)control;
 
                 usbDeviceConnection.bulkTransfer(endpointOut,
                         message, message.length, 0);
@@ -273,24 +315,33 @@ public class MainActivity extends ActionBarActivity implements Runnable{
         UsbRequest request = new UsbRequest();
         request.initialize(usbDeviceConnection, endpointIn);
         while (true) {
-            //Thread.sleep(10);
+
             request.queue(buffer, 1);
             if (usbDeviceConnection.requestWait() == request) {
                  byte dataRx = buffer.get(0);
 
                if(dataRx==0){
+                        Log.d("dataRx==0","dataRx:"+dataRx);
 
                }else{
-                   stringToRx +=(char)dataRx;
+                   stringToRx="";
+                   stringToRx+=(char)dataRx;
 
-                   //  stringToRx = dataRx;
                    runOnUiThread(new Runnable(){
 
                        @Override
                        public void run() {
-                           textIn.setText("IN:"+stringToRx+"-");
-                           // stringToRx="";
+                           textIn.setText(stringToRx);
+                           if(textIn.getText().toString().equals("A")){
+                               textAlarma1.setText("si");
+                               mp1.start();
+
+                           }else{textAlarma1.setText("no");
+                               mp1.stop();
+                           }
+
                        }});
+
                }
 
 

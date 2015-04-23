@@ -28,16 +28,53 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Enviar"/>
-    <TextView
-        android:id="@+id/textin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.03" />
 
-    <TextView
-        android:layout_width="353dp"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RX: "
+            android:id="@+id/textView" />
+
+        <TextView
+            android:id="@+id/textin"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="75dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ALARMA: "
+            android:id="@+id/textView2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="off"
+            android:id="@+id/textAlarma1" />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Alarma1 Esperando status"
-        android:id="@+id/textAlarma1" />
+        android:text="Sonido"
+        android:id="@+id/btn_Sonido" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New ToggleButton"
+        android:id="@+id/toggleAlarma"
+        android:checked="false" />
 
 </LinearLayout>
