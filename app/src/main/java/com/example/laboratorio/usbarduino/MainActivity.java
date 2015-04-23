@@ -268,21 +268,32 @@ public class MainActivity extends ActionBarActivity implements Runnable{
 
     @Override
     public void run() {
+
         ByteBuffer buffer = ByteBuffer.allocate(1);
         UsbRequest request = new UsbRequest();
         request.initialize(usbDeviceConnection, endpointIn);
         while (true) {
+            //Thread.sleep(10);
             request.queue(buffer, 1);
             if (usbDeviceConnection.requestWait() == request) {
-                 final char dataRx = (char) buffer.get(0);
-                Log.d(TAG, "dataRx: " + dataRx);
-                    //  stringToRx = dataRx;
-                    runOnUiThread(new Runnable(){
+                 byte dataRx = buffer.get(0);
 
-                        @Override
-                        public void run() {
-                            textIn.setText("IN:"+dataRx+"-");
-                        }});
+               if(dataRx==0){
+
+               }else{
+                   stringToRx +=(char)dataRx;
+
+                   //  stringToRx = dataRx;
+                   runOnUiThread(new Runnable(){
+
+                       @Override
+                       public void run() {
+                           textIn.setText("IN:"+stringToRx+"-");
+                           // stringToRx="";
+                       }});
+               }
+
+
                 }
 
         }
