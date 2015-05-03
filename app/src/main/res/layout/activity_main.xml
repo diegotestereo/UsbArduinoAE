@@ -8,21 +8,15 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.androidusbhostarduino.MainActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:id="@+id/lay3">
 
-
-    <ToggleButton
-        android:id="@+id/arduinoled"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textOn="ON"
-        android:textOff="OFF"
-        android:checked="false" />
 
     <EditText
         android:id="@+id/textout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
     <Button
         android:id="@+id/send"
         android:layout_width="match_parent"
@@ -49,7 +43,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="75dp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,11 +64,86 @@
         android:text="Sonido"
         android:id="@+id/btn_Sonido" />
 
-    <ToggleButton
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New ToggleButton"
-        android:id="@+id/toggleAlarma"
-        android:checked="false" />
+        android:gravity="center"
+        android:id="@+id/lay1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:text="Activacion de Alarmas : "
+            android:id="@+id/textView3" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alarmas"
+            android:id="@+id/switch_Alarma"
+            android:checked="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/lay2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alarmas: "
+            android:id="@+id/textView4" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Intrusion"
+            android:id="@+id/btn_Arduino" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apertura"
+            android:id="@+id/btn_Apertura" />
+
+        <Button
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:text="Energia"
+            android:id="@+id/btn_Energia" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/camera_preview">
+
+        <SurfaceView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/surfaceView"
+            android:layout_weight="0.63"
+            android:layout_gravity="center" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="video"
+            android:id="@+id/btn_Video"
+            android:layout_gravity="left|bottom" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="foto"
+            android:id="@+id/btn_Captura"
+            android:layout_gravity="right|bottom" />
+
+    </FrameLayout>
 
 </LinearLayout>
