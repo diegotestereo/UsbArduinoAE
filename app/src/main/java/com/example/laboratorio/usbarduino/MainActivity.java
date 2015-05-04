@@ -152,7 +152,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    Toast.makeText(getApplicationContext(), "Alarmas Activadas", Toast.LENGTH_SHORT).show();
+                   Toast.makeText(getApplicationContext(), "Alarmas Activadas", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Alarma Activada");
                     alarmasTotales.cancel(false);
 
