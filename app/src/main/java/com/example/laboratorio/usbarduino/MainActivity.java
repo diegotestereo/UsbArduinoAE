@@ -35,10 +35,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,7 +79,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     private int calidadFoto = 90;
-
+    private  Socket socket;
 
     private UsbManager usbManager;
     private UsbDevice deviceFound;
@@ -112,6 +118,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
         Botones();
         alarmasTotales = new CheckAlarmas();
+
        CAMARA_ON();
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         Log.d(TAG, "Termino el OnCreate");
@@ -501,7 +508,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
     private  class CheckAlarmas extends AsyncTask<Void,Void,Void>{
 
-
+Boolean boolDesicion=true;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -517,7 +524,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                 }
                 try {
 
-                    Thread.sleep(500);
+                    Thread.sleep(100);
                     Log.d(TAG,"doInBackground"+isCancelled());
                     publishProgress();
 
@@ -534,12 +541,18 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         //    Toast.makeText(getApplicationContext(),"onProgressUpdate",Toast.LENGTH_SHORT).show();
             if(textIn.getText().toString().equals("A")){
                 textAlarma1.setText("si");
-                  mpIntrusion.start();
+                mpIntrusion.start();
                 Toast.makeText(getApplicationContext(),"Alarma Detectada",Toast.LENGTH_SHORT).show();
-                   mCamera.takePicture(null,null,mPicture);
+                mCamera.takePicture(null, null, mPicture);
                 // Filmacion();
-                  sendSMS("2235776581","Alarma de Intrusión");
-                textIn.setText("");
+               //   sendSMS("2235776581", "Alarma de Intrusión");
+                   textIn.setText("");
+
+                ClienteTCP tcp =new ClienteTCP();
+                tcp.start();
+
+
+
 
             }else{textAlarma1.setText("no");
             }
@@ -788,7 +801,43 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
 
     //////////////////////////--- FOTO Y VIDEO ----//////////////////////
+   //////////// ++++ COMUNICACION TCP++++ ////////////
 
+
+
+    public class  ClienteTCP extends Thread{
+
+
+        @Override
+        public void run() {
+
+            try {
+                //Create a client socket and define internet address and the port of the server
+                socket = new Socket("192.168.0.103",9001);
+                //Get the input stream of the client socket
+                InputStream is = socket.getInputStream();
+                //Get the output stream of the client socket
+                PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
+                //Write data to the output stream of the client socket
+                out.println("Alarma Detectada");
+                //Buffer the data coming from the input stream
+                BufferedReader br = new BufferedReader(
+                        new InputStreamReader(is));
+                //Read data in the input buffer
+                //   textIn.append(br.readLine());
+                //Close the client socket
+                socket.close();
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
 
 
 }
