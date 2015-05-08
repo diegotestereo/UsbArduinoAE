@@ -18,12 +18,12 @@ public class SistemaEnergizado extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         this.contexto=context;
-        mpEnergiaOn = MediaPlayer.create(contexto, R.raw.energiarestablecida);
-        mpEnergiaOn.start();
+      //  mpEnergiaOn = MediaPlayer.create(contexto, R.raw.energiarestablecida);
+       // mpEnergiaOn.start();
         Toast.makeText(context, "Sistema Energizado", Toast.LENGTH_SHORT).show();
         SmsManager manager = SmsManager.getDefault();
         PendingIntent sentIntent = PendingIntent.getActivity(contexto, 0, new Intent(), 0);
         PendingIntent deliveryIntent = PendingIntent.getActivity(contexto, 0, new Intent(), 0);
-        manager.sendTextMessage("2235776581", null, "Sistema Energizado", sentIntent, deliveryIntent);
+      //  manager.sendTextMessage("2235776581", null, "Sistema Energizado", sentIntent, deliveryIntent);
     }
 }

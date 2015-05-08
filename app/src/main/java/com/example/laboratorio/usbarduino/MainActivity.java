@@ -60,9 +60,9 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private static final int CMD_TEXT = 3;
     private static final int MAX_TEXT_LENGTH = 16;
 
-    ToggleButton buttonLed, toogleAlarma;
+    ToggleButton buttonLed, toogleAlarma,toggle_ka;
     Switch switch_button;
-    EditText textOut;
+    EditText textOut,edit_IP,edit_Port,edit_IdRadio;
     Button buttonSend, buttonSonido, btn_Foto, btn_Video, btn_Arduino;
     Button btn_Energia,btn_Apertura;
     TextView textIn, textAlarma1;
@@ -105,6 +105,9 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private final String Alarma_PersonalNoAutorizado = "personalnoautorizado";
     private final String Enviando_Informacion = "enviandoinformacion";
 private int Alarma =1;
+
+
+
     CheckAlarmas alarmasTotales;
 
     // String foto = Environment.getExternalStorageDirectory() + "/Radiobase.jpg";
@@ -158,13 +161,13 @@ private int Alarma =1;
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                   Toast.makeText(getApplicationContext(), "Alarmas Activadas", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Alarmas Activadas", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Alarma Activada");
                     alarmasTotales.cancel(false);
 
                     alarmasTotales = new CheckAlarmas();
                     alarmasTotales.execute();
-             //       mpSensorOn.start();
+                    //       mpSensorOn.start();
 
 
                 } else {
@@ -173,8 +176,8 @@ private int Alarma =1;
                             "tivada");
 
                     alarmasTotales.cancel(true);
-                //    mpSensorOff.start();
-                                    }
+                    //    mpSensorOff.start();
+                }
             }
         });
 
@@ -257,6 +260,16 @@ private int Alarma =1;
             }
         });
 
+        toggle_ka.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+            }
+        });
+
+
+
 
     }
 
@@ -299,8 +312,13 @@ private int Alarma =1;
         textAlarma1 = (TextView) findViewById(R.id.textAlarma1);
         textOut = (EditText) findViewById(R.id.textout);
         textIn = (TextView) findViewById(R.id.textin);
-        buttonSend = (Button) findViewById(R.id.send);
 
+        edit_IP =(EditText)findViewById(R.id.edit_IP);
+        edit_Port=(EditText)findViewById(R.id.edit_Port);
+        edit_IdRadio =(EditText)findViewById(R.id.edit_IdRadio);
+
+        toggle_ka= (ToggleButton) findViewById(R.id.toggle_ka);
+        buttonSend = (Button) findViewById(R.id.send);
         btn_Foto = (Button) findViewById(R.id.btn_Captura);
         btn_Video = (Button) findViewById(R.id.btn_Video);
         btn_Arduino = (Button) findViewById(R.id.btn_Arduino);
@@ -514,8 +532,8 @@ Boolean boolDesicion=true;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(getApplicationContext(),"OnPreExcecute",Toast.LENGTH_SHORT).show();
-            Log.d(TAG,"OnPreExcecute");
+         //   Toast.makeText(getApplicationContext(),"OnPreExcecute",Toast.LENGTH_SHORT).show();
+       //     Log.d(TAG,"OnPreExcecute");
         }
 
         @Override
@@ -527,7 +545,7 @@ Boolean boolDesicion=true;
                 try {
 
                     Thread.sleep(100);
-                    Log.d(TAG,"doInBackground"+isCancelled());
+              //      Log.d(TAG,"doInBackground"+isCancelled());
                     publishProgress();
 
                 } catch (InterruptedException e) {
@@ -552,7 +570,7 @@ Boolean boolDesicion=true;
                 case "2":
                     textAlarma1.setText("si");
                     mpIntrusion.start();
-                    Toast.makeText(getApplicationContext(),"Alarma Detectada",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Intrusion",Toast.LENGTH_SHORT).show();
 //                mCamera.takePicture(null, null, mPicture);
                     // Filmacion();
                     //   sendSMS("2235776581", "Alarma de Intrusión");
@@ -563,7 +581,7 @@ Boolean boolDesicion=true;
                 case "3":
                     textAlarma1.setText("si");
                     mpApertura.start();
-                    Toast.makeText(getApplicationContext(),"Alarma de Apertura",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Apertura",Toast.LENGTH_SHORT).show();
 //                mCamera.takePicture(null, null, mPicture);
                     // Filmacion();
                     //   sendSMS("2235776581", "Alarma de Intrusión");
@@ -574,7 +592,7 @@ Boolean boolDesicion=true;
                 case "4":
                     textAlarma1.setText("si");
                     mpEnergiaOn.start();
-                    Toast.makeText(getApplicationContext(),"Alarma Detectada",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Energía",Toast.LENGTH_SHORT).show();
 //                mCamera.takePicture(null, null, mPicture);
                     // Filmacion();
                     //   sendSMS("2235776581", "Alarma de Intrusión");
@@ -590,7 +608,7 @@ Boolean boolDesicion=true;
                }
             textAlarma1.setText("no");
             textIn.setText("");
-            Log.d(TAG, "Alarma " + A);
+        //    Log.d(TAG, "Alarma " + A);
          }
 
 
@@ -599,7 +617,7 @@ Boolean boolDesicion=true;
         protected void onCancelled() {
             super.onCancelled();
 
-            Log.d(TAG,"AsyncTask Cancelado");
+      //      Log.d(TAG,"AsyncTask Cancelado");
         }
 
         @Override
@@ -837,13 +855,17 @@ Boolean boolDesicion=true;
     public class  ClienteTCP  extends Thread{
 
         int AlarmThread=Alarma;
-
+        int IDRADIO=0;
+     int puerto ;
+String IpPublica="200.51.82.70";
         @Override
         public void run() {
+            puerto=Integer.parseInt(edit_Port.getText().toString());
+            IpPublica=edit_IP.getText().toString();
 
             try {
                 //Create a client socket and define internet address and the port of the server
-                socket = new Socket("200.51.82.70",9001);
+                socket = new Socket(IpPublica,puerto);
                 //Get the input stream of the client socket
                 InputStream is = socket.getInputStream();
                 //Get the output stream of the client socket
@@ -851,7 +873,10 @@ Boolean boolDesicion=true;
                 //Write data to the output stream of the client socket
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 //out.println(" Diego "+AlarmThread+" "+timeStamp);
-                out.println(" Diego "+AlarmThread);
+
+                IDRADIO=Integer.parseInt(edit_IdRadio.getText().toString());
+
+                        out.println(" "+IDRADIO+" "+AlarmThread);// Id REadiobase + Id alarma
 
                 //Buffer the data coming from the input stream
                 final BufferedReader br = new BufferedReader(
@@ -889,6 +914,7 @@ Boolean boolDesicion=true;
 
         }
     }
+
 
 
 }
