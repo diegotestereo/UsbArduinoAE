@@ -104,7 +104,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private final String Alarma_EnergiaOFF = "alarmadeenergia";
     private final String Alarma_PersonalNoAutorizado = "personalnoautorizado";
     private final String Enviando_Informacion = "enviandoinformacion";
-
+private int Alarma =1;
     CheckAlarmas alarmasTotales;
 
     // String foto = Environment.getExternalStorageDirectory() + "/Radiobase.jpg";
@@ -148,11 +148,10 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         btn_Arduino.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataRx = 65;
-                Toast.makeText(getApplicationContext(), "Alarma Simulada", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "Alarma Simulada");
-
-                textIn.setText("" + (char) dataRx);
+              //  dataRx = 65;
+                  Log.d(TAG, "Alarma Simulada");
+      //   textIn.setText("" + (char) dataRx);
+                textIn.setText("2");
             }
         });
         switch_button.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -165,7 +164,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
                     alarmasTotales = new CheckAlarmas();
                     alarmasTotales.execute();
-                    mpSensorOn.start();
+             //       mpSensorOn.start();
 
 
                 } else {
@@ -174,7 +173,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                             "tivada");
 
                     alarmasTotales.cancel(true);
-                    mpSensorOff.start();
+                //    mpSensorOff.start();
                                     }
             }
         });
@@ -203,7 +202,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
             @Override
             public void onClick(View v) {
-                  mpIntrusion.start();
+                 mpIntrusion.start();
                 //sendSMS(TelDiego, Alarma_1);
                 Log.d(TAG, "Boton de Sonido");
 
@@ -214,9 +213,11 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             @Override
             public void onClick(View v) {
 
-                mpApertura.start();
+            //    mpApertura.start();
                 //sendSMS(TelDiego, Alarma_1);
                 Log.d(TAG, "Boton de Sonido");
+
+                textIn.setText("3");
 
             }
         });
@@ -224,9 +225,10 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
             @Override
             public void onClick(View v) {
-                mpEnergiaOn.start();
+           //     mpEnergiaOn.start();
                 //sendSMS(TelDiego, Alarma_1);
                 Log.d(TAG, "Boton de Sonido");
+                textIn.setText("4");
 
             }
         });
@@ -539,27 +541,57 @@ Boolean boolDesicion=true;
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
         //    Toast.makeText(getApplicationContext(),"onProgressUpdate",Toast.LENGTH_SHORT).show();
-            if(textIn.getText().toString().equals("A")){
-                textAlarma1.setText("si");
-                mpIntrusion.start();
-                Toast.makeText(getApplicationContext(),"Alarma Detectada",Toast.LENGTH_SHORT).show();
-                mCamera.takePicture(null, null, mPicture);
-                // Filmacion();
-               //   sendSMS("2235776581", "Alarma de Intrusión");
-                   textIn.setText("");
+            ClienteTCP tcp;
+            String A=textIn.getText().toString();
+            switch (A){
+                case "1":
+                    Toast.makeText(getApplicationContext(),"Server OK",Toast.LENGTH_SHORT).show();
+                    textAlarma1.setText("no");
+                    Alarma=1;
+                   break;
+                case "2":
+                    textAlarma1.setText("si");
+                    mpIntrusion.start();
+                    Toast.makeText(getApplicationContext(),"Alarma Detectada",Toast.LENGTH_SHORT).show();
+//                mCamera.takePicture(null, null, mPicture);
+                    // Filmacion();
+                    //   sendSMS("2235776581", "Alarma de Intrusión");
+                    Alarma=2;
+                    tcp =new ClienteTCP();
+                    tcp.start();
+                    break;
+                case "3":
+                    textAlarma1.setText("si");
+                    mpApertura.start();
+                    Toast.makeText(getApplicationContext(),"Alarma de Apertura",Toast.LENGTH_SHORT).show();
+//                mCamera.takePicture(null, null, mPicture);
+                    // Filmacion();
+                    //   sendSMS("2235776581", "Alarma de Intrusión");
+                    Alarma=3;
+                    tcp =new ClienteTCP();
+                    tcp.start();
+                      break;
+                case "4":
+                    textAlarma1.setText("si");
+                    mpEnergiaOn.start();
+                    Toast.makeText(getApplicationContext(),"Alarma Detectada",Toast.LENGTH_SHORT).show();
+//                mCamera.takePicture(null, null, mPicture);
+                    // Filmacion();
+                    //   sendSMS("2235776581", "Alarma de Intrusión");
+                    Alarma=4;
+                    tcp =new ClienteTCP();
+                    tcp.start();
+    break;
+                default:
+                    Alarma= 5;
 
-                ClienteTCP tcp =new ClienteTCP();
-                tcp.start();
+                       break;
 
-
-
-
-            }else{textAlarma1.setText("no");
-            }
-
-            Log.d(TAG,"onProgressUpdate"); Log.d(TAG,"onProgressUpdate");
-
-        }
+               }
+            textAlarma1.setText("no");
+            textIn.setText("");
+            Log.d(TAG, "Alarma " + A);
+         }
 
 
 
@@ -573,10 +605,7 @@ Boolean boolDesicion=true;
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(getApplicationContext(),"onPostExecute",Toast.LENGTH_SHORT).show();
-            Log.d(TAG,"onPostExecute");
-
-        }
+          }
     }
 
    ////////////////////////// ++++   FOTO y VIDEO +++++ /////////////////
@@ -805,26 +834,48 @@ Boolean boolDesicion=true;
 
 
 
-    public class  ClienteTCP extends Thread{
+    public class  ClienteTCP  extends Thread{
 
+        int AlarmThread=Alarma;
 
         @Override
         public void run() {
 
             try {
                 //Create a client socket and define internet address and the port of the server
-                socket = new Socket("192.168.0.103",9001);
+                socket = new Socket("200.51.82.70",9001);
                 //Get the input stream of the client socket
                 InputStream is = socket.getInputStream();
                 //Get the output stream of the client socket
                 PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
                 //Write data to the output stream of the client socket
-                out.println("Alarma Detectada");
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                //out.println(" Diego "+AlarmThread+" "+timeStamp);
+                out.println(" Diego "+AlarmThread);
+
                 //Buffer the data coming from the input stream
-                BufferedReader br = new BufferedReader(
+                final BufferedReader br = new BufferedReader(
                         new InputStreamReader(is));
+                Log.d(TAG,"dato server null");
+              //  String entrada=br.readLine();
+
+              /*  if (br.equals(null)){
+                    Log.d(TAG,"dato server null");
+                }else{
                 //Read data in the input buffer
-                //   textIn.append(br.readLine());
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        try {
+                            Log.d(TAG,"dato server: "+br.readLine());
+                            textIn.append(br.readLine());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });}*/
+
                 //Close the client socket
                 socket.close();
             } catch (NumberFormatException e) {
