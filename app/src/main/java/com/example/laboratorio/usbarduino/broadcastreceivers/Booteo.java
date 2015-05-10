@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.SmsManager;
 
-import com.example.laboratorio.usbarduino.MainActivity;
+import com.example.laboratorio.usbarduino.Actividades.MainActivity;
 
 /**
  * Created by Diego on 30/04/2015.

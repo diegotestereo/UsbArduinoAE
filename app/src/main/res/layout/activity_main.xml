@@ -41,13 +41,33 @@
                     android:ems="10"
                     android:id="@+id/edit_IdRadio"
                     android:text="1"
-                    android:focusable="false" />
+                    android:focusable="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sonido"
+                    android:id="@+id/textView11" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New ToggleButton"
+                    android:id="@+id/toggleAudio"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="KEEP ALIVE"
+                    android:text="K A"
                     android:id="@+id/textView6" />
 
                 <ToggleButton
@@ -55,8 +75,37 @@
                     android:layout_height="wrap_content"
                     android:text="New ToggleButton"
                     android:id="@+id/toggle_ka"
-                    android:checked="true" />
+                    android:checked="false" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Timer"
+                    android:id="@+id/textView10" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/edit_TimerKA"
+                    android:layout_weight="1"
+                    android:text="5000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Puerto"
+                    android:id="@+id/textView9" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="time"
+                    android:ems="10"
+                    android:id="@+id/editText"
+                    android:text="9002"
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <LinearLayout
@@ -74,44 +123,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/edit_IP"
-                    android:text="192.168.0.103"
+                    android:text="192.168.0.109"
                     android:focusable="true" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Puerto KA"
-                    android:id="@+id/textView9" />
-
-                <EditText
-                    android:layout_width="65dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="time"
-                    android:ems="10"
-                    android:id="@+id/editText"
-                    android:text="9002" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Puerto A:"
+                    android:text="Puerto :"
                     android:id="@+id/textView8" />
 
                 <EditText
-                    android:layout_width="51dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/edit_Port"
-                    android:text="9001" />
+                    android:text="9001"
+                    android:layout_weight="1" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -147,15 +177,7 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textin"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                    android:id="@+id/textin" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -168,6 +190,7 @@
                     android:layout_height="wrap_content"
                     android:text="off"
                     android:id="@+id/textAlarma1" />
+
             </LinearLayout>
 
             <Button
@@ -204,12 +227,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:id="@+id/lay2">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Alarmas: "
-                    android:id="@+id/textView4" />
 
                 <Button
                     android:layout_width="wrap_content"

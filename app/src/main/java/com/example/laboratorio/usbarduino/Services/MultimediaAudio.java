@@ -64,6 +64,10 @@ boolean salir=false;
 
     @Override
     public IBinder onBind(Intent intent) {
+
+
+
+
         return null;
     }
 }

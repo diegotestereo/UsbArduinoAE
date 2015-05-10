@@ -23,7 +23,7 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Actividades.MainActivity"
             android:label="@string/app_name">
 
 
@@ -59,7 +59,7 @@
             </intent-filter>
         </receiver>
    <service android:name=".Services.MultimediaAudio"/>
-
+        <service android:name=".Services.KeepAlive"/>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.laboratorio.usbarduino;
+package com.example.laboratorio.usbarduino.Actividades;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -36,7 +36,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.laboratorio.usbarduino.CheckAlarmas;
+import com.example.laboratorio.usbarduino.ConexionIP;
+import com.example.laboratorio.usbarduino.R;
+import com.example.laboratorio.usbarduino.Services.KeepAlive;
 import com.example.laboratorio.usbarduino.Services.MultimediaAudio;
+import com.example.laboratorio.usbarduino.TimerKA;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -124,6 +129,11 @@ private int Alarma =1;
         IpPublica=edit_IP.getText().toString();
         RelojKA=new TimerKA(IdRadiobase,IpPublica);
         RelojKA.execute();
+
+    }
+
+    @Override
+    protected void onDestroy() {
 
     }
 
@@ -280,11 +290,14 @@ private int Alarma =1;
                 if(isChecked){
                     IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
                     IpPublica=edit_IP.getText().toString();
-                    RelojKA=new TimerKA(IdRadiobase,IpPublica);
-                    RelojKA.execute();
+                    intent=new Intent(getApplicationContext(), KeepAlive.class);
+                    intent.putExtra("Id",IdRadiobase );
+                    intent.putExtra("Ip", IpPublica);
+                    intent.putExtra("bool",true);
+                    intent.putExtra("Timer",3000);
+                    startService(intent);
                 }else{
-                    RelojKA.cancel(true);
-
+                 stopService(intent);
                 }
 
 
