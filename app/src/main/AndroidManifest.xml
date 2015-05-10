@@ -41,29 +41,24 @@
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
             </intent-filter>
-
-
-
-        </activity>
-        <receiver android:name="BroadcastReceivers.Booteo">
+     </activity>
+        <receiver android:name=".broadcastreceivers.Booteo">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
-
-
-        <receiver android:name="BroadcastReceivers.SistemaEnBateria">
+    <receiver android:name=".broadcastreceivers.SistemaEnBateria">
         <intent-filter>
             <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
        </intent-filter>
         </receiver>
-        <receiver android:name="BroadcastReceivers.SistemaEnergizado">
+        <receiver android:name=".broadcastreceivers.SistemaEnergizado">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
             </intent-filter>
         </receiver>
+   <service android:name=".Services.MultimediaAudio"/>
 
     </application>
 

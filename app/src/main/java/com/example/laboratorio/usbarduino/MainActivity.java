@@ -36,6 +36,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.laboratorio.usbarduino.Services.MultimediaAudio;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -102,7 +104,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private final String Enviando_Informacion = "enviandoinformacion";
 private int Alarma =1;
     int  IdRadiobase;
-
+    Intent intent;
     CheckAlarmas alarmasTotales;
     TimerKA RelojKA;
     String IpPublica;
@@ -152,6 +154,9 @@ private int Alarma =1;
                 Log.d(TAG, "Alarma Simulada");
                 //   textIn.setText("" + (char) dataRx);
                 textIn.setText("2");
+                intent=new Intent(getApplicationContext(), MultimediaAudio.class);
+                intent.putExtra("Alarma", 2);
+                startService(intent);
             }
         });
         switch_button.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -203,7 +208,9 @@ private int Alarma =1;
                 //sendSMS(TelDiego, Alarma_1);
                 Log.d(TAG, "Boton de foto alarma");
 
-                mCamera.takePicture(null, null, mPicture);
+             //   mCamera.takePicture(null, null, mPicture);
+
+
 
             }
         });
@@ -215,8 +222,11 @@ private int Alarma =1;
             //    mpApertura.start();
                 //sendSMS(TelDiego, Alarma_1);
                 Log.d(TAG, "Boton de Apertura");
-
+                stopService(intent);
                 textIn.setText("3");
+                intent=new Intent(getApplicationContext(), MultimediaAudio.class);
+                intent.putExtra("Alarma", 3);
+                startService(intent);
 
             }
         });
@@ -228,6 +238,9 @@ private int Alarma =1;
                 //sendSMS(TelDiego, Alarma_1);
                 Log.d(TAG, "Boton de Energia");
                 textIn.setText("4");
+                intent=new Intent(getApplicationContext(), MultimediaAudio.class);
+                intent.putExtra("Alarma", 4);
+                startService(intent);
 
             }
         });

@@ -1,6 +1,8 @@
-package com.example.laboratorio.usbarduino;
+package com.example.laboratorio.usbarduino.Services;
 
 import android.util.Log;
+
+import com.example.laboratorio.usbarduino.ConexionIP;
 
 /**
  * Created by Diego on 09/05/2015.

@@ -3,6 +3,8 @@ package com.example.laboratorio.usbarduino;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.laboratorio.usbarduino.Services.KeepAlive;
+
 /**
  * Created by Diego on 09/05/2015.
  */
