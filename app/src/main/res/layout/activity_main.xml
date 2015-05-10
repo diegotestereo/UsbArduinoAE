@@ -40,7 +40,8 @@
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/edit_IdRadio"
-                    android:text="1" />
+                    android:text="1"
+                    android:focusable="false" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -54,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:text="New ToggleButton"
                     android:id="@+id/toggle_ka"
-                    android:checked="false" />
+                    android:checked="true" />
 
             </LinearLayout>
 
@@ -73,13 +74,35 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/edit_IP"
-                    android:text="192.168.0.103" />
+                    android:text="192.168.0.103"
+                    android:focusable="true" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Puerto KA"
+                    android:id="@+id/textView9" />
+
+                <EditText
+                    android:layout_width="65dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="time"
+                    android:ems="10"
+                    android:id="@+id/editText"
+                    android:text="9002" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="PORT:"
+                    android:text="Puerto A:"
                     android:id="@+id/textView8" />
 
                 <EditText
@@ -94,7 +117,8 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:weightSum="1">
 
                 <EditText
                     android:id="@+id/textout"
@@ -104,9 +128,9 @@
 
                 <Button
                     android:id="@+id/send"
-                    android:layout_width="125dp"
+                    android:layout_width="112dp"
                     android:layout_height="wrap_content"
-                    android:text="Enviar"/>
+                    android:text="Enviar Usb" />
             </LinearLayout>
 
             <LinearLayout

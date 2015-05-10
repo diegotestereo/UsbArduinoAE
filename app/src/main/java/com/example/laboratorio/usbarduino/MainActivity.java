@@ -101,9 +101,11 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private final String Alarma_PersonalNoAutorizado = "personalnoautorizado";
     private final String Enviando_Informacion = "enviandoinformacion";
 private int Alarma =1;
-
+    int  IdRadiobase;
 
     CheckAlarmas alarmasTotales;
+    TimerKA RelojKA;
+    String IpPublica;
 
     // String foto = Environment.getExternalStorageDirectory() + "/Radiobase.jpg";
     //   private File ImagenFile;
@@ -111,15 +113,15 @@ private int Alarma =1;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // sE CREA EL OBJETO CAMARA
-         LevantarXML();
-
+        LevantarXML();
         Botones();
-       // alarmasTotales = new CheckAlarmas();
-
-       CAMARA_ON();
+        CAMARA_ON();
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         Log.d(TAG, "Termino el OnCreate");
+        IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
+        IpPublica=edit_IP.getText().toString();
+        RelojKA=new TimerKA(IdRadiobase,IpPublica);
+        RelojKA.execute();
 
     }
 
@@ -199,15 +201,9 @@ private int Alarma =1;
             public void onClick(View v) {
                //  mpIntrusion.start();
                 //sendSMS(TelDiego, Alarma_1);
-                Log.d(TAG, "Boton de Sonido");
-                String IP=edit_IP.getText().toString();
-                int Port=Integer.parseInt(edit_Port.getText().toString());
-                int IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
-                String Alarma=textIn.getText().toString();
+                Log.d(TAG, "Boton de foto alarma");
 
-                CheckAlarmas CheckAlarmita=new CheckAlarmas(IdRadiobase,Alarma,IP,Port,getApplicationContext());
-                //textIn.setText("");
-                CheckAlarmita.start();
+                mCamera.takePicture(null, null, mPicture);
 
             }
         });
@@ -218,7 +214,7 @@ private int Alarma =1;
 
             //    mpApertura.start();
                 //sendSMS(TelDiego, Alarma_1);
-                Log.d(TAG, "Boton de Sonido");
+                Log.d(TAG, "Boton de Apertura");
 
                 textIn.setText("3");
 
@@ -230,7 +226,7 @@ private int Alarma =1;
             public void onClick(View v) {
            //     mpEnergiaOn.start();
                 //sendSMS(TelDiego, Alarma_1);
-                Log.d(TAG, "Boton de Sonido");
+                Log.d(TAG, "Boton de Energia");
                 textIn.setText("4");
 
             }
@@ -262,13 +258,16 @@ private int Alarma =1;
 
         toggle_ka.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-            int  IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
-            String IpPublica=edit_IP.getText().toString();
-            TimerKA RelojKA=new TimerKA(IdRadiobase,IpPublica);
+
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
                 if(isChecked){
+                    IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
+                    IpPublica=edit_IP.getText().toString();
+                    RelojKA=new TimerKA(IdRadiobase,IpPublica);
                     RelojKA.execute();
                 }else{
                     RelojKA.cancel(true);
