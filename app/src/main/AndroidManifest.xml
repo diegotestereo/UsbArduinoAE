@@ -45,7 +45,7 @@
 
 
         </activity>
-        <receiver android:name="Booteo">
+        <receiver android:name="BroadcastReceivers.Booteo">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -54,12 +54,12 @@
 
 
 
-        <receiver android:name="SistemaEnBateria">
+        <receiver android:name="BroadcastReceivers.SistemaEnBateria">
         <intent-filter>
             <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
        </intent-filter>
         </receiver>
-        <receiver android:name="SistemaEnergizado">
+        <receiver android:name="BroadcastReceivers.SistemaEnergizado">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
             </intent-filter>
