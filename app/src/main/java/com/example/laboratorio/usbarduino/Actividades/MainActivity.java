@@ -41,7 +41,7 @@ import com.example.laboratorio.usbarduino.ConexionIP;
 import com.example.laboratorio.usbarduino.R;
 import com.example.laboratorio.usbarduino.Services.KeepAlive;
 import com.example.laboratorio.usbarduino.Services.MultimediaAudio;
-import com.example.laboratorio.usbarduino.TimerKA;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -65,7 +65,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
     ToggleButton buttonLed, toogleAlarma,toggle_ka;
     Switch switch_button;
-    EditText textOut,edit_IP,edit_Port,edit_IdRadio,textIn;
+    EditText textOut,edit_IP,edit_Port,edit_IdRadio,textIn,edit_TimerKA,edit_PortKA;
     Button buttonSend, buttonSonido, btn_Foto, btn_Video, btn_Arduino;
     Button btn_Energia,btn_Apertura;
     TextView  textAlarma1;
@@ -111,7 +111,7 @@ private int Alarma =1;
     int  IdRadiobase;
     Intent intent;
     CheckAlarmas alarmasTotales;
-    TimerKA RelojKA;
+
     String IpPublica;
 
     // String foto = Environment.getExternalStorageDirectory() + "/Radiobase.jpg";
@@ -124,16 +124,16 @@ private int Alarma =1;
         Botones();
         CAMARA_ON();
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
-        Log.d(TAG, "Termino el OnCreate");
+        Log.d(TAG, "OnCreate");
         IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
         IpPublica=edit_IP.getText().toString();
-        RelojKA=new TimerKA(IdRadiobase,IpPublica);
-        RelojKA.execute();
-
+        BotonesEnabled(false);
     }
 
     @Override
     protected void onDestroy() {
+        Log.d(TAG, "OnDestroy");
+        mCamera.release();
 
     }
 
@@ -173,19 +173,14 @@ private int Alarma =1;
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    Toast.makeText(getApplicationContext(), "Alarmas Activadas", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Alarma Activada");
-
-                    //       mpSensorOn.start();
+                       Log.d(TAG, "Alarma Activada");
+        //     mpSensorOn.start();
 
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "Alarmas Desactivadas", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Alarma Desac" +
                             "tivada");
-
-
-                    //    mpSensorOff.start();
+        //    mpSensorOff.start();
                 }
             }
         });
@@ -290,14 +285,19 @@ private int Alarma =1;
                 if(isChecked){
                     IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
                     IpPublica=edit_IP.getText().toString();
+                    int Timer=Integer.parseInt(edit_TimerKA.getText().toString());
                     intent=new Intent(getApplicationContext(), KeepAlive.class);
                     intent.putExtra("Id",IdRadiobase );
                     intent.putExtra("Ip", IpPublica);
                     intent.putExtra("bool",true);
-                    intent.putExtra("Timer",3000);
+                    intent.putExtra("Timer", Timer);
                     startService(intent);
+                    BotonesEnabled(isChecked);
                 }else{
                  stopService(intent);
+                    edit_TimerKA.setEnabled(true);
+                    BotonesEnabled(isChecked);
+
                 }
 
 
@@ -324,9 +324,7 @@ private int Alarma =1;
                 int IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
                 Log.d(TAG,"IdRadiobase:"+IdRadiobase);
                 String Alarma=textIn.getText().toString();
-
                 CheckAlarmas CheckAlarmita=new CheckAlarmas(IdRadiobase,Alarma,IP,Port,getApplicationContext());
-                //textIn.setText("");
                 CheckAlarmita.start();
 
 
@@ -380,7 +378,8 @@ private int Alarma =1;
         edit_IP =(EditText)findViewById(R.id.edit_IP);
         edit_Port=(EditText)findViewById(R.id.edit_Port);
         edit_IdRadio =(EditText)findViewById(R.id.edit_IdRadio);
-
+        edit_TimerKA= (EditText) findViewById(R.id.edit_TimerKA);
+        edit_PortKA=(EditText)findViewById(R.id.edit_PortKA);
         toggle_ka= (ToggleButton) findViewById(R.id.toggle_ka);
         buttonSend = (Button) findViewById(R.id.send);
         btn_Foto = (Button) findViewById(R.id.btn_Captura);
@@ -814,6 +813,18 @@ private int Alarma =1;
 
 
     //////////////////////////--- FOTO Y VIDEO ----//////////////////////
+
+
+    private void BotonesEnabled (boolean ena){
+
+        edit_IdRadio.setEnabled(!ena);
+        edit_IP.setEnabled(!ena);
+        edit_Port.setEnabled(!ena);
+        edit_PortKA.setEnabled(!ena);
+        edit_TimerKA.setEnabled(!ena);
+
+    }
+
 
 
 }

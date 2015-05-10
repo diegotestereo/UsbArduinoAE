@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import com.example.laboratorio.usbarduino.R;
 
@@ -44,11 +43,10 @@ boolean salir=false;
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this,"Servicio Detenido",Toast.LENGTH_SHORT).show();
-        switch (Alarma){
+       switch (Alarma){
             case 2:
                 mp2.stop();
-                salir=true;
+
                 break;
             case 3:
                 mp3.stop();
@@ -58,7 +56,6 @@ boolean salir=false;
                 break;
             default:break;
         }
-        Toast.makeText(this,"Servicio Detenido",Toast.LENGTH_SHORT).show();
 
     }
 

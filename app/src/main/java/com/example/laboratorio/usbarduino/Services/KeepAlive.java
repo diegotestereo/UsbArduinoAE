@@ -61,7 +61,7 @@ public class KeepAlive  extends Service {
             while(Bool){
             try {
                 Thread.sleep(TiempoSeg);
-                ClienteTCP=new ConexionIP(IpPublica,9001," "+IdRadiobase+" 1");
+                ClienteTCP=new ConexionIP(IpPublica,9002," "+IdRadiobase+" 1");
                 ClienteTCP.start();
             } catch (InterruptedException e) {
                 e.printStackTrace();

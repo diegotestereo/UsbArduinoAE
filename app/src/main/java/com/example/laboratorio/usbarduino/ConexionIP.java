@@ -3,10 +3,7 @@ package com.example.laboratorio.usbarduino;
 
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -40,15 +37,15 @@ public class ConexionIP extends Thread {
             //Create a client socket and define internet address and the port of the server
             socket = new Socket(Ip,Puerto);
             //Get the input stream of the client socket
-            InputStream is = socket.getInputStream();
+        //    InputStream is = socket.getInputStream();
             //Get the output stream of the client socket
             PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
             //Write data to the output stream of the client socket
           out.println(msg);// Id REadiobase + Id alarma
 
             //Buffer the data coming from the input stream
-            final BufferedReader br = new BufferedReader(
-                    new InputStreamReader(is));
+          //  final BufferedReader br = new BufferedReader(
+            //        new InputStreamReader(is));
 
             socket.close();
         } catch (NumberFormatException e) {
