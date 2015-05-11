@@ -12,7 +12,7 @@ import com.example.laboratorio.usbarduino.ConexionIP;
  */
 public class KeepAlive  extends Service {
     static ConexionIP ClienteTCP;
-    static int IdRadiobase, TiempoSeg;
+    static int IdRadiobase, TiempoSeg,PuertoKA;
     static String IpPublica;
     String TAG = "Usb Arduino";
     static boolean Bool;
@@ -23,10 +23,14 @@ public class KeepAlive  extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        IpPublica = intent.getExtras().getString("Ip");
-        IdRadiobase = intent.getExtras().getInt("Id");
-        Bool = intent.getExtras().getBoolean("bool");
-        TiempoSeg = intent.getExtras().getInt("Timer");
+
+        this.intento=intent;
+
+        IpPublica = intento.getExtras().getString("Ip");
+        IdRadiobase = intento.getExtras().getInt("Id");
+        PuertoKA=intento.getExtras().getInt("PuertoKA");
+        Bool = intento.getExtras().getBoolean("bool");
+        TiempoSeg = intento.getExtras().getInt("Timer");
         hilito=new Hilo();
         hilito.start();
         Toast.makeText(getApplicationContext(), "Servicio iniciado: " + Bool, Toast.LENGTH_SHORT).show();
@@ -61,7 +65,7 @@ public class KeepAlive  extends Service {
             while(Bool){
             try {
                 Thread.sleep(TiempoSeg);
-                ClienteTCP=new ConexionIP(IpPublica,9002," "+IdRadiobase+" 1");
+                ClienteTCP=new ConexionIP(IpPublica,PuertoKA," "+IdRadiobase+" 1");
                 ClienteTCP.start();
             } catch (InterruptedException e) {
                 e.printStackTrace();
