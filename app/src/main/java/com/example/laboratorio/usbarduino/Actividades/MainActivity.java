@@ -42,7 +42,6 @@ import com.example.laboratorio.usbarduino.R;
 import com.example.laboratorio.usbarduino.Services.KeepAlive;
 import com.example.laboratorio.usbarduino.Services.MultimediaAudio;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -63,10 +62,10 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private static final int CMD_TEXT = 3;
     private static final int MAX_TEXT_LENGTH = 16;
 
-    ToggleButton buttonLed, toogleAlarma,toggle_ka;
+    ToggleButton buttonLed,toggleAudio, toogleAlarma,toggle_ka;
     Switch switch_button;
     EditText textOut,edit_IP,edit_Port,edit_IdRadio,textIn,edit_TimerKA,edit_PortKA;
-    Button buttonSend, buttonSonido, btn_Foto, btn_Video, btn_Arduino;
+    Button buttonSend, btn_Prueba, btn_Foto, btn_Video, btn_Intrusion;
     Button btn_Energia,btn_Apertura;
     TextView  textAlarma1;
 
@@ -109,7 +108,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private final String Enviando_Informacion = "enviandoinformacion";
 private int Alarma =1;
     int  IdRadiobase;
-    Intent intent;
+    Intent intentMultimedia,intentKeepAlive;
     CheckAlarmas alarmasTotales;
 
     String IpPublica;
@@ -122,18 +121,47 @@ private int Alarma =1;
         setContentView(R.layout.activity_main);
         LevantarXML();
         Botones();
-        CAMARA_ON();
+     //   CAMARA_ON();
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
-        Log.d(TAG, "OnCreate");
+
         IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
         IpPublica=edit_IP.getText().toString();
         BotonesEnabled(false);
+        Log.d(TAG, "OnCreate");
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+       Intent intent = getIntent();
+        String action = intent.getAction();
+
+        UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+        if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
+            setDevice(device);
+            Toast.makeText(getApplicationContext(), "USB Conectado", Toast.LENGTH_SHORT).show();
+        } else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
+            Toast.makeText(getApplicationContext(), "USB Desconectado", Toast.LENGTH_SHORT).show();
+
+            if (deviceFound != null && deviceFound.equals(device)) {
+                setDevice(null);
+            }
+        }
+        Log.d(TAG, "OnResume");
+
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
     }
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         Log.d(TAG, "OnDestroy");
-        mCamera.release();
+      //  mCamera.release();
 
     }
 
@@ -157,18 +185,7 @@ private int Alarma =1;
     ///////////////7//////// SMS ----////////////////////
     private void Botones() {
 
-        btn_Arduino.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //  dataRx = 65;
-                Log.d(TAG, "Alarma Simulada");
-                //   textIn.setText("" + (char) dataRx);
-                textIn.setText("2");
-                intent=new Intent(getApplicationContext(), MultimediaAudio.class);
-                intent.putExtra("Alarma", 2);
-                startService(intent);
-            }
-        });
+
         switch_button.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -205,7 +222,7 @@ private int Alarma =1;
             }
         });
 
-        buttonSonido.setOnClickListener(new OnClickListener() {
+        btn_Prueba.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -214,9 +231,24 @@ private int Alarma =1;
                 Log.d(TAG, "Boton de foto alarma");
 
              //   mCamera.takePicture(null, null, mPicture);
+            edit_IP.setText("200.51.82.70");
+                Toast.makeText(getApplicationContext(),"IP Publica: 200.51.82.70",Toast.LENGTH_SHORT).show();
 
 
+            }
+        });
 
+        btn_Intrusion.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //  dataRx = 65;
+                Log.d(TAG, "Alarma Simulada");
+                //   textIn.setText("" + (char) dataRx);
+                textIn.setText("2");
+                intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
+                intentMultimedia.putExtra("Alarma", 2);
+                intentMultimedia.putExtra("FlagSonido", true);
+                startService(intentMultimedia);
             }
         });
         btn_Apertura.setOnClickListener(new OnClickListener() {
@@ -227,11 +259,12 @@ private int Alarma =1;
             //    mpApertura.start();
                 //sendSMS(TelDiego, Alarma_1);
                 Log.d(TAG, "Boton de Apertura");
-                stopService(intent);
+
                 textIn.setText("3");
-                intent=new Intent(getApplicationContext(), MultimediaAudio.class);
-                intent.putExtra("Alarma", 3);
-                startService(intent);
+                intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
+                intentMultimedia.putExtra("Alarma", 3);
+                intentMultimedia.putExtra("FlagSonido",true);
+                startService(intentMultimedia);
 
             }
         });
@@ -243,9 +276,12 @@ private int Alarma =1;
                 //sendSMS(TelDiego, Alarma_1);
                 Log.d(TAG, "Boton de Energia");
                 textIn.setText("4");
-                intent=new Intent(getApplicationContext(), MultimediaAudio.class);
-                intent.putExtra("Alarma", 4);
-                startService(intent);
+                intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
+                intentMultimedia.putExtra("Alarma", 4);
+                if(true){
+                intentMultimedia.putExtra("FlagSonido",true);}else{
+                intentMultimedia.putExtra("FlagSonido",false);}
+                startService(intentMultimedia);
 
             }
         });
@@ -273,7 +309,18 @@ private int Alarma =1;
 
             }
         });
-
+        toggleAudio.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    Log.d(TAG,"Audio ON");
+                    Toast.makeText(getApplicationContext(),"Audio ON",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Audio ON",Toast.LENGTH_SHORT).show();
+                    Log.d(TAG,"Audio Off");
+                }
+            }
+        });
         toggle_ka.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 
@@ -286,15 +333,15 @@ private int Alarma =1;
                     IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
                     IpPublica=edit_IP.getText().toString();
                     int Timer=Integer.parseInt(edit_TimerKA.getText().toString());
-                    intent=new Intent(getApplicationContext(), KeepAlive.class);
-                    intent.putExtra("Id",IdRadiobase );
-                    intent.putExtra("Ip", IpPublica);
-                    intent.putExtra("bool",true);
-                    intent.putExtra("Timer", Timer);
-                    startService(intent);
+                    intentKeepAlive=new Intent(getApplicationContext(), KeepAlive.class);
+                    intentKeepAlive.putExtra("Id",IdRadiobase );
+                    intentKeepAlive.putExtra("Ip", IpPublica);
+                    intentKeepAlive.putExtra("bool",true);
+                    intentKeepAlive.putExtra("Timer", Timer);
+                    startService(intentKeepAlive);
                     BotonesEnabled(isChecked);
                 }else{
-                 stopService(intent);
+                 stopService(intentKeepAlive);
                     edit_TimerKA.setEnabled(true);
                     BotonesEnabled(isChecked);
 
@@ -380,16 +427,22 @@ private int Alarma =1;
         edit_IdRadio =(EditText)findViewById(R.id.edit_IdRadio);
         edit_TimerKA= (EditText) findViewById(R.id.edit_TimerKA);
         edit_PortKA=(EditText)findViewById(R.id.edit_PortKA);
+
         toggle_ka= (ToggleButton) findViewById(R.id.toggle_ka);
+        toggleAudio= (ToggleButton) findViewById(R.id.toggleAudio);
+
         buttonSend = (Button) findViewById(R.id.send);
         btn_Foto = (Button) findViewById(R.id.btn_Captura);
         btn_Video = (Button) findViewById(R.id.btn_Video);
-        btn_Arduino = (Button) findViewById(R.id.btn_Arduino);
+        btn_Intrusion = (Button) findViewById(R.id.btn_Intrusion);
         btn_Energia = (Button) findViewById(R.id.btn_Energia);
-        buttonSonido = (Button) findViewById(R.id.btn_Sonido);
+        btn_Prueba = (Button) findViewById(R.id.btn_Prueba);
         btn_Apertura = (Button) findViewById(R.id.btn_Apertura);
+
         switch_button = (Switch) findViewById(R.id.switch_Alarma);
+
         preview = (FrameLayout) findViewById(R.id.camera_preview);
+
         mPreview = (SurfaceView) findViewById(R.id.surfaceView);
 
         mpIntrusion = MediaPlayer.create(this, R.raw.alarmadeintrusion);
@@ -407,28 +460,6 @@ private int Alarma =1;
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Toast.makeText(getApplicationContext(), "onResume", Toast.LENGTH_SHORT).show();
-
-        Intent intent = getIntent();
-        String action = intent.getAction();
-
-        UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-        if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
-            setDevice(device);
-            Toast.makeText(getApplicationContext(), "USB Conectado", Toast.LENGTH_SHORT).show();
-        } else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
-            Toast.makeText(getApplicationContext(), "USB Desconectado", Toast.LENGTH_SHORT).show();
-
-            if (deviceFound != null && deviceFound.equals(device)) {
-                setDevice(null);
-            }
-        }
-        Log.d(TAG, "OnResume Finalizado");
-
-    }
 
     private void setDevice(UsbDevice device) {
         usbInterfaceFound = null;

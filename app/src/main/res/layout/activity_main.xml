@@ -191,14 +191,14 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Prueba"
-                    android:id="@+id/btn_Sonido" />
+                    android:text="Ip Publ"
+                    android:id="@+id/btn_Prueba" />
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Intrusion"
-                    android:id="@+id/btn_Arduino" />
+                    android:id="@+id/btn_Intrusion" />
 
                 <Button
                     android:layout_width="wrap_content"

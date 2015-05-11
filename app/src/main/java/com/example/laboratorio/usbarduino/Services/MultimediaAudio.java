@@ -12,7 +12,8 @@ import com.example.laboratorio.usbarduino.R;
  */
 public class MultimediaAudio extends Service {
     MediaPlayer mp2,mp3,mp4;
-    int Alarma;
+    int Alarma=0;
+    boolean FlagSonido=false;
 boolean salir=false;
     @Override
     public void onCreate() {
@@ -25,16 +26,20 @@ boolean salir=false;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         Alarma=intent.getExtras().getInt("Alarma");
+        FlagSonido=intent.getExtras().getBoolean("FlagSonido");
         switch (Alarma){
             case 2:
-                mp2.start();
+                if(FlagSonido){
+                mp2.start();}
                 break;
             case 3:
-                 mp3.start();
+                if(FlagSonido){
+                 mp3.start();}
                 break;
             case 4:
-                 mp4.start();
+                if(FlagSonido){ mp4.start();}
                 break;
             default:break;
         }
