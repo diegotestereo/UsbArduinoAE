@@ -247,7 +247,11 @@ private int Alarma =1;
                 textIn.setText("2");
                 intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
                 intentMultimedia.putExtra("Alarma", 2);
-                intentMultimedia.putExtra("FlagSonido", true);
+                toggleAudio.isChecked();
+                if( toggleAudio.isChecked()){
+                    intentMultimedia.putExtra("FlagSonido",true);}else{
+                    intentMultimedia.putExtra("FlagSonido",false);}
+                startService(intentMultimedia);
                 startService(intentMultimedia);
             }
         });
@@ -263,7 +267,12 @@ private int Alarma =1;
                 textIn.setText("3");
                 intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
                 intentMultimedia.putExtra("Alarma", 3);
-                intentMultimedia.putExtra("FlagSonido",true);
+                //intentMultimedia.putExtra("FlagSonido",true);
+                toggleAudio.isChecked();
+                if (toggleAudio.isChecked()){
+                    intentMultimedia.putExtra("FlagSonido",true);}else{
+                    intentMultimedia.putExtra("FlagSonido",false);}
+                startService(intentMultimedia);
                 startService(intentMultimedia);
 
             }
@@ -278,7 +287,8 @@ private int Alarma =1;
                 textIn.setText("4");
                 intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
                 intentMultimedia.putExtra("Alarma", 4);
-                if(true){
+                toggleAudio.isChecked();
+                if( toggleAudio.isChecked()){
                 intentMultimedia.putExtra("FlagSonido",true);}else{
                 intentMultimedia.putExtra("FlagSonido",false);}
                 startService(intentMultimedia);
