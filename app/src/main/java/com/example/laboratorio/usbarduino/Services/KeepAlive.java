@@ -3,6 +3,7 @@ package com.example.laboratorio.usbarduino.Services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.laboratorio.usbarduino.ConexionIP;
@@ -63,9 +64,11 @@ public class KeepAlive  extends Service {
         @Override
         public void run() {
             while(Bool){
+                Log.d("USB_ARDUINO", "Bool " + Bool);
             try {
-                Thread.sleep(TiempoSeg);
+                Thread.sleep(TiempoSeg*1000);
                 ClienteTCP=new ConexionIP(IpPublica,PuertoKA," "+IdRadiobase+" 1");
+                Log.d("USB_ARDUINO", "IpPublica: "+IpPublica +"PuertoKA: "+PuertoKA+ "TiempoSeg: "+TiempoSeg+"Bool: "+Bool+"IdRadiobase: "+IdRadiobase);
                 ClienteTCP.start();
             } catch (InterruptedException e) {
                 e.printStackTrace();

@@ -116,17 +116,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Timer"
+                    android:text="Timer Seg."
                     android:id="@+id/textView10" />
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="45dp"
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/edit_TimerKA"
-                    android:layout_weight="1"
-                    android:text="5000" />
+                    android:text="10" />
 
                 <TextView
                     android:layout_width="wrap_content"

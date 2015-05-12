@@ -19,14 +19,11 @@ public class ConexionIP extends Thread {
 
     String TAG="ConexionIP";
 
-    public ConexionIP(String Ip,int Puerto,String msg){
+    public ConexionIP(String Ip,int Puerto,String msg) {
 
-        this.Ip=Ip;
-        this.msg=msg;
-        this.Puerto=Puerto;
-
-
-
+        this.Ip = Ip;
+        this.msg = msg;
+        this.Puerto = Puerto;
     }
 
 

@@ -342,10 +342,12 @@ private int Alarma =1;
                 if(isChecked){
                     IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
                     IpPublica=edit_IP.getText().toString();
+
                     int Timer=Integer.parseInt(edit_TimerKA.getText().toString());
                     intentKeepAlive=new Intent(getApplicationContext(), KeepAlive.class);
                     intentKeepAlive.putExtra("Id",IdRadiobase );
                     intentKeepAlive.putExtra("Ip", IpPublica);
+                    intentKeepAlive.putExtra("PuertoKA",Integer.parseInt(edit_PortKA.getText().toString()));
                     intentKeepAlive.putExtra("bool",true);
                     intentKeepAlive.putExtra("Timer", Timer);
                     startService(intentKeepAlive);
@@ -353,6 +355,7 @@ private int Alarma =1;
                 }else{
                  stopService(intentKeepAlive);
                     edit_TimerKA.setEnabled(true);
+                    intentKeepAlive.putExtra("bool",false);
                     BotonesEnabled(isChecked);
 
                 }
