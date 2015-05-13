@@ -141,17 +141,30 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
 
     @Override
+    protected void onPause() {
+        super.onPause();
+          releaseMediaRecorder();       // if you are using MediaRecorder, release it first
+             releaseCamera();              // release the camera immediately on pause event
+        Log.d(TAG, "On Pause");
+        GuardarPreferencias();
+    }
+
+
+    @Override
     protected void onStop() {
         super.onStop();
+        releaseMediaRecorder();       // if you are using MediaRecorder, release it first
+        releaseCamera();              // release the camera immediately on pause event
         Log.d(TAG, "onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        releaseMediaRecorder();       // if you are using MediaRecorder, release it first
+        releaseCamera();              // release the camera immediately on pause event
         Log.d(TAG, "OnDestroy");
-       mCamera.release();
-
+    
     }
 
     private void CAMARA_ON() {
@@ -645,13 +658,6 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         Log.d(TAG,"Parametros de la Camara Cargados");
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //  releaseMediaRecorder();       // if you are using MediaRecorder, release it first
-        //     releaseCamera();              // release the camera immediately on pause event
-        Log.d(TAG,"On Pause");
-    }
 
     /** A safe way to get an instance of the Camera object. */
     public static Camera getCameraInstance(){
@@ -876,6 +882,18 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     public void GuardarPreferencias(){
 
 
+        SharedPreferences mispreferencias=getSharedPreferences("PreferenciasUsuario", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=mispreferencias.edit();
+
+
+
+        editor.putString("IdRadio",edit_IdRadio.getText().toString());
+        editor.putString("edit_IP", edit_IP.getText().toString());
+        editor.putString("edit_Port", edit_Port.getText().toString());
+        editor.putString("edit_PortKA", edit_PortKA.getText().toString());
+        editor.putString("edit_TimerKA", edit_TimerKA.getText().toString());
+
+        editor.commit();
 
 
 
