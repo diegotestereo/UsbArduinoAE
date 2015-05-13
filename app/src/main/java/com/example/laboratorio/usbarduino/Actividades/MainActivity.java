@@ -3,6 +3,7 @@ package com.example.laboratorio.usbarduino.Actividades;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Camera;
 import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;
@@ -112,6 +113,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
         IpPublica=edit_IP.getText().toString();
         BotonesEnabled(false);
+        CargarPreferencias();
         Log.d(TAG, "OnCreate");
     }
     @Override
@@ -754,7 +756,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         if (mCamera != null){
             mCamera.release();        // release the camera for other applications
             mCamera = null;
-            Log.d(TAG,"Camara Liberada");
+            Log.d(TAG, "Camara Liberada");
         }
     }
 
@@ -855,6 +857,32 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
     }
 
+///////////////////// PREFERENCIAS DE USUARIO ////////////////
+ public void CargarPreferencias(){
 
+     SharedPreferences mispreferencias=getSharedPreferences("PreferenciasUsuario", Context.MODE_PRIVATE);
+
+     edit_IdRadio.setText(mispreferencias.getString("IdRadio", "0"));
+     edit_IP.setText(mispreferencias.getString("edit_IP","200.51.82.70"));
+     edit_Port.setText(mispreferencias.getString("edit_Port","9001"));
+     edit_PortKA.setText(mispreferencias.getString("edit_PortKA","9002"));
+     edit_TimerKA.setText(mispreferencias.getString("edit_TimerKA","30"));
+
+
+
+
+ }
+
+    public void GuardarPreferencias(){
+
+
+
+
+
+    }
+
+
+
+// //////////////////////////////////////////////////////////
 
 }

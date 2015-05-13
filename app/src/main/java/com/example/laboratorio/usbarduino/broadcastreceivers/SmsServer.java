@@ -14,7 +14,7 @@ public class SmsServer extends BroadcastReceiver {
         /*
         tal como encender luces. activar audios sacare fotos por control
         o filmar todo por comandos ejectados a distanciaa.
-        
+
          */
     }
 }
