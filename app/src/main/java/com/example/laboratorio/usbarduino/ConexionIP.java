@@ -47,17 +47,17 @@ public class ConexionIP extends Thread {
             socket.close();
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            Log.d(TAG,""+e);
+            Log.d(TAG,"NumberFormatException "+e);
 
 
         } catch (UnknownHostException e) {
 
             e.printStackTrace();
-            Log.d(TAG, "" + e);
+            Log.d(TAG, "UnknownHostException " + e);
         } catch (IOException e) {
 
             e.printStackTrace();
-            Log.d(TAG, "" + e);
+            Log.d(TAG, " IOException " + e);
         }
 
 

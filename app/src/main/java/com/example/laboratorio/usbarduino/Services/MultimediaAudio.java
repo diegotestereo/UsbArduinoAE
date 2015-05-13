@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.example.laboratorio.usbarduino.R;
 
@@ -14,6 +15,7 @@ public class MultimediaAudio extends Service {
     MediaPlayer mp2,mp3,mp4;
     int Alarma=0;
     boolean FlagSonido=false;
+   static String TAG="USB_ARDUINO";
 boolean salir=false;
     @Override
     public void onCreate() {
@@ -21,14 +23,20 @@ boolean salir=false;
        mp3= MediaPlayer.create(this,R.raw.alarmadeapertura);
        mp4= MediaPlayer.create(this,R.raw.alarmadeenergia);
 
-
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+      //  if (intent.getExtras().getInt("Alarma")==null){
+
+
+
+       // }
         Alarma=intent.getExtras().getInt("Alarma");
+        Log.d(TAG,"Alarma: "+Alarma);
         FlagSonido=intent.getExtras().getBoolean("FlagSonido");
+        Log.d(TAG,"FlagSonido: "+FlagSonido);
         switch (Alarma){
             case 2:
                 if(FlagSonido){

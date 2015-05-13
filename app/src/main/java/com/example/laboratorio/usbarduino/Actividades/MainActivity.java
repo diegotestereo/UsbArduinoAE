@@ -13,7 +13,6 @@ import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
 import android.hardware.usb.UsbRequest;
 import android.media.CamcorderProfile;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -90,7 +89,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private UsbEndpoint endpointOut = null;
     private UsbEndpoint endpointIn = null;
     private Thread RX, Audio;
-    public MediaPlayer mpIntrusion,mpApertura,mpSensorOn,mpSensorOff,mpEnergiaOn,mpEnergiaOff,mpPersonalNo,mpEnviandoInfo;
+   // public MediaPlayer mpIntrusion,mpApertura,mpSensorOn,mpSensorOff,mpEnergiaOn,mpEnergiaOff,mpPersonalNo,mpEnviandoInfo;
     static final String TAG = "USB_ARDUINO";
 
 
@@ -143,8 +142,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     @Override
     protected void onPause() {
         super.onPause();
-          releaseMediaRecorder();       // if you are using MediaRecorder, release it first
-             releaseCamera();              // release the camera immediately on pause event
+     //     releaseMediaRecorder();       // if you are using MediaRecorder, release it first
+       //      releaseCamera();              // release the camera immediately on pause event
         Log.d(TAG, "On Pause");
         GuardarPreferencias();
     }
@@ -153,18 +152,18 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     @Override
     protected void onStop() {
         super.onStop();
-        releaseMediaRecorder();       // if you are using MediaRecorder, release it first
-        releaseCamera();              // release the camera immediately on pause event
+      //  releaseMediaRecorder();       // if you are using MediaRecorder, release it first
+       // releaseCamera();              // release the camera immediately on pause event
         Log.d(TAG, "onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        releaseMediaRecorder();       // if you are using MediaRecorder, release it first
+     //   releaseMediaRecorder();       // if you are using MediaRecorder, release it first
         releaseCamera();              // release the camera immediately on pause event
         Log.d(TAG, "OnDestroy");
-    
+
     }
 
     private void CAMARA_ON() {
@@ -193,14 +192,10 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                        Log.d(TAG, "Alarma Activada");
-        //     mpSensorOn.start();
-
-
-                } else {
+              } else {
                     Log.d(TAG, "Alarma Desac" +
                             "tivada");
-        //    mpSensorOff.start();
-                }
+               }
             }
         });
 
@@ -229,12 +224,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             @Override
             public void onClick(View v) {
                //sendSMS(TelDiego, Alarma_1);
-                Log.d(TAG, "Boton de foto alarma");
-
-
+            Log.d(TAG, "Boton de foto alarma");
             edit_IP.setText("200.51.82.70");
-                Toast.makeText(getApplicationContext(),"IP Publica: 200.51.82.70",Toast.LENGTH_SHORT).show();
-
 
             }
         });
@@ -243,8 +234,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             @Override
             public void onClick(View v) {
 
-                Log.d(TAG, "Alarma Simulada");
-                mCamera.takePicture(null, null, mPicture);
+                Log.d(TAG, "Alarma Intrusion");
+           //     mCamera.takePicture(null, null, mPicture);
                 textIn.setText("2");
                 intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
                 intentMultimedia.putExtra("Alarma", 2);
@@ -253,7 +244,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                     intentMultimedia.putExtra("FlagSonido",true);}else{
                     intentMultimedia.putExtra("FlagSonido",false);}
                 startService(intentMultimedia);
-                startService(intentMultimedia);
+
             }
         });
         btn_Apertura.setOnClickListener(new OnClickListener() {
@@ -262,18 +253,16 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             public void onClick(View v) {
 
                //sendSMS(TelDiego, Alarma_1);
-                Log.d(TAG, "Boton de Apertura");
+                Log.d(TAG, "Alarma de Apertura");
 
                 textIn.setText("3");
                 intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
                 intentMultimedia.putExtra("Alarma", 3);
-                //intentMultimedia.putExtra("FlagSonido",true);
-                toggleAudio.isChecked();
                 if (toggleAudio.isChecked()){
                     intentMultimedia.putExtra("FlagSonido",true);}else{
                     intentMultimedia.putExtra("FlagSonido",false);}
                 startService(intentMultimedia);
-                startService(intentMultimedia);
+
 
             }
         });
@@ -283,8 +272,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             public void onClick(View v) {
            //     mpEnergiaOn.start();
                 //sendSMS(TelDiego, Alarma_1);
-                mCamera.takePicture(null, null, mPicture);
-                Log.d(TAG, "Boton de Energia");
+          //     mCamera.takePicture(null, null, mPicture);
+                Log.d(TAG, "Alarma de Energia");
                 textIn.setText("4");
                 intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
                 intentMultimedia.putExtra("Alarma", 4);
@@ -456,20 +445,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         switch_button = (Switch) findViewById(R.id.switch_Alarma);
 
         preview = (FrameLayout) findViewById(R.id.camera_preview);
-
         mPreview = (SurfaceView) findViewById(R.id.surfaceView);
-
-        mpIntrusion = MediaPlayer.create(this, R.raw.alarmadeintrusion);
-        mpApertura = MediaPlayer.create(this, R.raw.alarmadeapertura);
-        mpEnergiaOn = MediaPlayer.create(this, R.raw.alarmadeenergia);
-        mpEnergiaOff = MediaPlayer.create(this, R.raw.energiarestablecida);
-        mpSensorOn = MediaPlayer.create(this, R.raw.sensoresactivados);
-        mpSensorOff = MediaPlayer.create(this, R.raw.sensoresdesactivados);
-        mpPersonalNo = MediaPlayer.create(this, R.raw.personalnoautorizado);
-        mpEnviandoInfo = MediaPlayer.create(this, R.raw.enviandoinformacion);
-
-
-
         Log.d(TAG, "XML LEvantado");
 
     }
@@ -880,24 +856,15 @@ public class MainActivity extends ActionBarActivity implements Runnable {
  }
 
     public void GuardarPreferencias(){
-
-
         SharedPreferences mispreferencias=getSharedPreferences("PreferenciasUsuario", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=mispreferencias.edit();
-
-
-
         editor.putString("IdRadio",edit_IdRadio.getText().toString());
         editor.putString("edit_IP", edit_IP.getText().toString());
         editor.putString("edit_Port", edit_Port.getText().toString());
         editor.putString("edit_PortKA", edit_PortKA.getText().toString());
         editor.putString("edit_TimerKA", edit_TimerKA.getText().toString());
-
         editor.commit();
-
-
-
-    }
+ }
 
 
 

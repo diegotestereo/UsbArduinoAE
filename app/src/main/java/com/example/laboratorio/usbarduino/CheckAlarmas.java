@@ -25,14 +25,6 @@ public class CheckAlarmas extends Thread{
         this.contex=contex;
         this.IdRadiobase=IdRadiobase;
 
-        mpIntrusion = MediaPlayer.create(contex, R.raw.alarmadeintrusion);
-        mpApertura = MediaPlayer.create(contex, R.raw.alarmadeapertura);
-      mpEnergiaOn = MediaPlayer.create(contex, R.raw.alarmadeenergia);
-     /*   mpEnergiaOff = MediaPlayer.create(contex, R.raw.energiarestablecida);
-        mpSensorOn = MediaPlayer.create(contex, R.raw.sensoresactivados);
-        mpSensorOff = MediaPlayer.create(contex, R.raw.sensoresdesactivados);
-        mpPersonalNo = MediaPlayer.create(contex, R.raw.personalnoautorizado);
-        mpEnviandoInfo = MediaPlayer.create(contex, R.raw.enviandoinformacion);*/
 
     }
 
@@ -42,20 +34,16 @@ public class CheckAlarmas extends Thread{
 
            case "2":
 
-            //   mpIntrusion.start();
-             //     mCamera.takePicture(null, null, mPicture);
+              //     mCamera.takePicture(null, null, mPicture);
                // Filmacion();
                //   sendSMS("2235776581", "Alarma de Intrusin");
 
                msg=Mensaje(IdRadiobase,2);
             ClienteTCP=new ConexionIP(IpPublica,Puerto,msg);
-
-
-               ClienteTCP.start();
+ ClienteTCP.start();
      break;
            case "3":
 
-           //    mpApertura.start();
            //      mCamera.takePicture(null, null, mPicture);
                // Filmacion();
                //   sendSMS("2235776581", "Alarma de Intrusin");
@@ -69,8 +57,7 @@ public class CheckAlarmas extends Thread{
                break;
            case "4":
 
-            // mpEnergiaOn.start();
-           //      mCamera.takePicture(null, null, mPicture);
+             //      mCamera.takePicture(null, null, mPicture);
                // Filmacion();
                //   sendSMS("2235776581", "Alarma de Intrusin");
 

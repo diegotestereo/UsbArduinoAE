@@ -3,6 +3,7 @@ package com.example.laboratorio.usbarduino.broadcastreceivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.example.laboratorio.usbarduino.Actividades.MainActivity;
@@ -13,9 +14,8 @@ import com.example.laboratorio.usbarduino.ConexionIP;
  */
 public class Booteo extends BroadcastReceiver {
 Context contexto;
-    ConexionIP ClienteTCP;
-    String IP="192.168.0.109";
-    int Puerto=9001;
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
         this.contexto=context;
@@ -23,7 +23,12 @@ Context contexto;
         intento.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intento);
 
-        ClienteTCP=new ConexionIP(IP,Puerto," 1 7");
+        SharedPreferences mispreferencias=context.getSharedPreferences("PreferenciasUsuario", Context.MODE_PRIVATE);
+        String IP=mispreferencias.getString("edit_IP", "localhost");
+
+        int Puerto=Integer.parseInt(mispreferencias.getString(("edit_Port", "9001");
+
+        ConexionIP ClienteTCP=new ConexionIP(IP,Puerto," 1 7");
         ClienteTCP.start();
         Toast.makeText(context,"Sistema Reinicializado",Toast.LENGTH_SHORT).show();
       /*  SmsManager manager = SmsManager.getDefault();
