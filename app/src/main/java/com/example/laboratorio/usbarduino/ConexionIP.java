@@ -12,9 +12,9 @@ import java.net.UnknownHostException;
  * Created by Diego on 09/05/2015.
  */
 public class ConexionIP extends Thread {
-  //  int AlarmThread=Alarma;
 
-    int Puerto,IdRadio,IdAlarma ;
+
+    int Puerto ;
     String msg,Ip;
 
     String TAG="ConexionIP";

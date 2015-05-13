@@ -37,7 +37,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.laboratorio.usbarduino.CheckAlarmas;
-import com.example.laboratorio.usbarduino.ConexionIP;
 import com.example.laboratorio.usbarduino.R;
 import com.example.laboratorio.usbarduino.Services.KeepAlive;
 import com.example.laboratorio.usbarduino.Services.MultimediaAudio;
@@ -82,7 +81,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     public static final int MEDIA_TYPE_VIDEO = 2;
     private int calidadFoto = 90;
     private  Socket socket;
-    ConexionIP ClienteTCP;
+
     private UsbManager usbManager;
     private UsbDevice deviceFound;
     private UsbDeviceConnection usbDeviceConnection;
@@ -94,22 +93,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     static final String TAG = "USB_ARDUINO";
 
 
-    private final String TelDiego = "2235776581";
-    private final String TelNico = "2266471761";
-    private final String TelNinja = "2235776581";
-    private final String TelCheva = "2235776581";
-    private final String TelAndres = "2235776581";
-
-    private final String Alarma_Apertura = "alarmadeapertura";
-    private final String Alarma_Bandalismo = "alarmadebandalismo";
-    private final String Alarma_EnergiaOK = "energiarestablecida";
-    private final String Alarma_EnergiaOFF = "alarmadeenergia";
-    private final String Alarma_PersonalNoAutorizado = "personalnoautorizado";
-    private final String Enviando_Informacion = "enviandoinformacion";
-private int Alarma =1;
     int  IdRadiobase;
     Intent intentMultimedia,intentKeepAlive;
-    CheckAlarmas alarmasTotales;
 
     String IpPublica;
 
@@ -121,7 +106,7 @@ private int Alarma =1;
         setContentView(R.layout.activity_main);
         LevantarXML();
         Botones();
-     //   CAMARA_ON();
+        CAMARA_ON();
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
 
         IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
@@ -132,6 +117,8 @@ private int Alarma =1;
     @Override
     public void onResume() {
         super.onResume();
+
+
        Intent intent = getIntent();
         String action = intent.getAction();
 
@@ -161,7 +148,7 @@ private int Alarma =1;
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "OnDestroy");
-      //  mCamera.release();
+       mCamera.release();
 
     }
 
@@ -226,11 +213,10 @@ private int Alarma =1;
 
             @Override
             public void onClick(View v) {
-               //  mpIntrusion.start();
-                //sendSMS(TelDiego, Alarma_1);
+               //sendSMS(TelDiego, Alarma_1);
                 Log.d(TAG, "Boton de foto alarma");
 
-             //   mCamera.takePicture(null, null, mPicture);
+
             edit_IP.setText("200.51.82.70");
                 Toast.makeText(getApplicationContext(),"IP Publica: 200.51.82.70",Toast.LENGTH_SHORT).show();
 
@@ -241,9 +227,9 @@ private int Alarma =1;
         btn_Intrusion.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  dataRx = 65;
+
                 Log.d(TAG, "Alarma Simulada");
-                //   textIn.setText("" + (char) dataRx);
+                mCamera.takePicture(null, null, mPicture);
                 textIn.setText("2");
                 intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
                 intentMultimedia.putExtra("Alarma", 2);
@@ -260,8 +246,7 @@ private int Alarma =1;
             @Override
             public void onClick(View v) {
 
-            //    mpApertura.start();
-                //sendSMS(TelDiego, Alarma_1);
+               //sendSMS(TelDiego, Alarma_1);
                 Log.d(TAG, "Boton de Apertura");
 
                 textIn.setText("3");
@@ -283,6 +268,7 @@ private int Alarma =1;
             public void onClick(View v) {
            //     mpEnergiaOn.start();
                 //sendSMS(TelDiego, Alarma_1);
+                mCamera.takePicture(null, null, mPicture);
                 Log.d(TAG, "Boton de Energia");
                 textIn.setText("4");
                 intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
