@@ -94,7 +94,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
 
     int  IdRadiobase;
-    Intent intentMultimedia,intentKeepAlive;
+    Intent intentKeepAlive;
 
     String IpPublica;
 
@@ -112,13 +112,13 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
         IpPublica=edit_IP.getText().toString();
         BotonesEnabled(false);
-        CargarPreferencias();
+
         Log.d(TAG, "OnCreate");
     }
     @Override
     public void onResume() {
         super.onResume();
-
+        CargarPreferencias();
 
        Intent intent = getIntent();
         String action = intent.getAction();
@@ -135,8 +135,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             }
         }
         Log.d(TAG, "OnResume");
-
-    }
+  }
 
 
     @Override
@@ -154,14 +153,16 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         super.onStop();
       //  releaseMediaRecorder();       // if you are using MediaRecorder, release it first
        // releaseCamera();              // release the camera immediately on pause event
+        GuardarPreferencias();
         Log.d(TAG, "onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-     //   releaseMediaRecorder();       // if you are using MediaRecorder, release it first
+        releaseMediaRecorder();       // if you are using MediaRecorder, release it first
         releaseCamera();              // release the camera immediately on pause event
+        GuardarPreferencias();
         Log.d(TAG, "OnDestroy");
 
     }
@@ -237,7 +238,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                 Log.d(TAG, "Alarma Intrusion");
            //     mCamera.takePicture(null, null, mPicture);
                 textIn.setText("2");
-                intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
+                Intent  intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
                 intentMultimedia.putExtra("Alarma", 2);
                 toggleAudio.isChecked();
                 if( toggleAudio.isChecked()){
@@ -256,7 +257,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                 Log.d(TAG, "Alarma de Apertura");
 
                 textIn.setText("3");
-                intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
+                Intent intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
                 intentMultimedia.putExtra("Alarma", 3);
                 if (toggleAudio.isChecked()){
                     intentMultimedia.putExtra("FlagSonido",true);}else{
@@ -275,7 +276,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
           //     mCamera.takePicture(null, null, mPicture);
                 Log.d(TAG, "Alarma de Energia");
                 textIn.setText("4");
-                intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
+                Intent intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
                 intentMultimedia.putExtra("Alarma", 4);
                 toggleAudio.isChecked();
                 if( toggleAudio.isChecked()){
@@ -850,21 +851,24 @@ public class MainActivity extends ActionBarActivity implements Runnable {
      edit_PortKA.setText(mispreferencias.getString("edit_PortKA","9002"));
      edit_TimerKA.setText(mispreferencias.getString("edit_TimerKA","30"));
 
-
+Log.d(TAG,"Preferencias Cargadas");
 
 
  }
 
-    public void GuardarPreferencias(){
-        SharedPreferences mispreferencias=getSharedPreferences("PreferenciasUsuario", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=mispreferencias.edit();
-        editor.putString("IdRadio",edit_IdRadio.getText().toString());
+    public void GuardarPreferencias() {
+        SharedPreferences mispreferencias = getSharedPreferences("PreferenciasUsuario", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = mispreferencias.edit();
+        editor.putString("IdRadio", edit_IdRadio.getText().toString());
         editor.putString("edit_IP", edit_IP.getText().toString());
         editor.putString("edit_Port", edit_Port.getText().toString());
         editor.putString("edit_PortKA", edit_PortKA.getText().toString());
         editor.putString("edit_TimerKA", edit_TimerKA.getText().toString());
         editor.commit();
- }
+        Log.d(TAG, "Preferencias Almacenadas");
+
+
+    }
 
 
 

@@ -26,15 +26,12 @@ Context contexto;
         SharedPreferences mispreferencias=context.getSharedPreferences("PreferenciasUsuario", Context.MODE_PRIVATE);
         String IP=mispreferencias.getString("edit_IP", "localhost");
 
-        int Puerto=Integer.parseInt(mispreferencias.getString(("edit_Port", "9001");
+        int Puerto=Integer.parseInt(mispreferencias.getString("edit_Port", "9001"));
 
         ConexionIP ClienteTCP=new ConexionIP(IP,Puerto," 1 7");
         ClienteTCP.start();
         Toast.makeText(context,"Sistema Reinicializado",Toast.LENGTH_SHORT).show();
-      /*  SmsManager manager = SmsManager.getDefault();
-        PendingIntent sentIntent = PendingIntent.getActivity(contexto, 0, new Intent(), 0);
-        PendingIntent deliveryIntent = PendingIntent.getActivity(contexto, 0, new Intent(), 0);
-        manager.sendTextMessage("2235776581", null, "Sistema Reiniciado", sentIntent, deliveryIntent);*/
+
 
     }
 }

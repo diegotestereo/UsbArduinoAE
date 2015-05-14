@@ -27,19 +27,19 @@ public class SistemaEnBateria extends BroadcastReceiver {
         SharedPreferences mispreferencias=context.getSharedPreferences("PreferenciasUsuario", Context.MODE_PRIVATE);
         String IP=mispreferencias.getString("edit_IP", "localhost");
 
-        int Puerto= Integer.parseInt(mispreferencias.getString("edit_Port","9001"));
+        int Puerto= Integer.parseInt(mispreferencias.getString("edit_Port", "9001"));
 
         Toast.makeText(contexto, "Sistema Sobre Baterias", Toast.LENGTH_SHORT).show();
     /*   SmsManager manager = SmsManager.getDefault();
         PendingIntent sentIntent = PendingIntent.getActivity(contexto, 0, new Intent(), 0);
         PendingIntent deliveryIntent = PendingIntent.getActivity(contexto, 0, new Intent(), 0);*/
-
+        //   manager.sendTextMessage("2235776581", null, "Sistema en Baterias", sentIntent, deliveryIntent);
 
 
 
         ConexionIP ClienteTCP =new ConexionIP(IP,Puerto," 1 5");
         ClienteTCP.start();
-     //   manager.sendTextMessage("2235776581", null, "Sistema en Baterias", sentIntent, deliveryIntent);
+
 
     }
 
