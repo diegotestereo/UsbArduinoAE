@@ -58,7 +58,7 @@
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
             </intent-filter>
         </receiver>
-   <service android:name=".Services.MultimediaAudio"/>
+
         <service android:name=".Services.KeepAlive"/>
     </application>
 

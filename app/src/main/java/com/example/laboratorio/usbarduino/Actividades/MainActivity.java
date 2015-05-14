@@ -1,6 +1,5 @@
 package com.example.laboratorio.usbarduino.Actividades;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +17,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
-import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -37,9 +35,10 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.laboratorio.usbarduino.CheckAlarmas;
+import com.example.laboratorio.usbarduino.Multimedia;
 import com.example.laboratorio.usbarduino.R;
+import com.example.laboratorio.usbarduino.EnviarSMS;
 import com.example.laboratorio.usbarduino.Services.KeepAlive;
-import com.example.laboratorio.usbarduino.Services.MultimediaAudio;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -89,7 +88,6 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private UsbEndpoint endpointOut = null;
     private UsbEndpoint endpointIn = null;
     private Thread RX, Audio;
-   // public MediaPlayer mpIntrusion,mpApertura,mpSensorOn,mpSensorOff,mpEnergiaOn,mpEnergiaOff,mpPersonalNo,mpEnviandoInfo;
     static final String TAG = "USB_ARDUINO";
 
 
@@ -97,6 +95,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     Intent intentKeepAlive;
 
     String IpPublica;
+
+    String TelDiego="2235776581";
 
     // String foto = Environment.getExternalStorageDirectory() + "/Radiobase.jpg";
     //   private File ImagenFile;
@@ -175,14 +175,6 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
     ////////////////////////// SMS ++++++++////////////////////
 
-    private void sendSMS(String phoneNumber, String message) {
-
-        SmsManager manager = SmsManager.getDefault();
-        PendingIntent sentIntent = PendingIntent.getActivity(getApplicationContext(), 0, new Intent(), 0);
-        PendingIntent deliveryIntent = PendingIntent.getActivity(getApplicationContext(), 0, new Intent(), 0);
-        manager.sendTextMessage(phoneNumber, null, message, sentIntent, deliveryIntent);
-
-    }
 
     ///////////////7//////// SMS ----////////////////////
     private void Botones() {
@@ -224,7 +216,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
             @Override
             public void onClick(View v) {
-               //sendSMS(TelDiego, Alarma_1);
+               EnviarSMS  sms=new EnviarSMS(getApplicationContext(),TelDiego,"hola");
+                sms.sendSMS();
             Log.d(TAG, "Boton de foto alarma");
             edit_IP.setText("200.51.82.70");
 
@@ -238,13 +231,9 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                 Log.d(TAG, "Alarma Intrusion");
            //     mCamera.takePicture(null, null, mPicture);
                 textIn.setText("2");
-                Intent  intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
-                intentMultimedia.putExtra("Alarma", 2);
-                toggleAudio.isChecked();
-                if( toggleAudio.isChecked()){
-                    intentMultimedia.putExtra("FlagSonido",true);}else{
-                    intentMultimedia.putExtra("FlagSonido",false);}
-                startService(intentMultimedia);
+                if(toggleAudio.isChecked()){
+                    Multimedia Alarma=new Multimedia(getApplicationContext(),2);
+                    Alarma.AudioPlay();}
 
             }
         });
@@ -257,12 +246,9 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                 Log.d(TAG, "Alarma de Apertura");
 
                 textIn.setText("3");
-                Intent intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
-                intentMultimedia.putExtra("Alarma", 3);
-                if (toggleAudio.isChecked()){
-                    intentMultimedia.putExtra("FlagSonido",true);}else{
-                    intentMultimedia.putExtra("FlagSonido",false);}
-                startService(intentMultimedia);
+                if(toggleAudio.isChecked()){
+                    Multimedia Alarma=new Multimedia(getApplicationContext(),3);
+                    Alarma.AudioPlay();}
 
 
             }
@@ -271,18 +257,15 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
             @Override
             public void onClick(View v) {
-           //     mpEnergiaOn.start();
+
                 //sendSMS(TelDiego, Alarma_1);
           //     mCamera.takePicture(null, null, mPicture);
                 Log.d(TAG, "Alarma de Energia");
                 textIn.setText("4");
-                Intent intentMultimedia=new Intent(getApplicationContext(), MultimediaAudio.class);
-                intentMultimedia.putExtra("Alarma", 4);
-                toggleAudio.isChecked();
-                if( toggleAudio.isChecked()){
-                intentMultimedia.putExtra("FlagSonido",true);}else{
-                intentMultimedia.putExtra("FlagSonido",false);}
-                startService(intentMultimedia);
+                if(toggleAudio.isChecked()){
+                Multimedia Alarma=new Multimedia(getApplicationContext(),4);
+                Alarma.AudioPlay();}
+
 
             }
         });
