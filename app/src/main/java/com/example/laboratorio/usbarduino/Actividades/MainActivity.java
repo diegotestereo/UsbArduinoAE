@@ -36,11 +36,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.example.laboratorio.usbarduino.CheckAlarmas;
-import com.example.laboratorio.usbarduino.Multimedia;
+import com.example.laboratorio.usbarduino.Funciones.CheckAlarmas;
+import com.example.laboratorio.usbarduino.Funciones.Multimedia;
 import com.example.laboratorio.usbarduino.R;
 import com.example.laboratorio.usbarduino.Services.KeepAlive;
-import com.example.laboratorio.usbarduino.TomarFoto;
+import com.example.laboratorio.usbarduino.Funciones.TomarFoto;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -903,6 +903,15 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            Intent intent=new Intent(this,Lay_Configuracion.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.about) {
+
+           Toast.makeText(getApplicationContext(),"Aplicacion desarrollada por\nIng. Diego A.Giovanazzi.\n" +
+                   " correo: DiegoGiovanazzi@gmail.com",Toast.LENGTH_LONG).show();
             return true;
         }
 

@@ -6,21 +6,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
-import com.example.laboratorio.usbarduino.ConexionIP;
+import com.example.laboratorio.usbarduino.Funciones.ConexionIP;
 
 /**
  * Created by Diego on 30/04/2015.
  */
 public class SistemaEnBateria extends BroadcastReceiver {
-    Context contexto;
-
-
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        this.contexto = context;
 
 
 
@@ -29,7 +24,7 @@ public class SistemaEnBateria extends BroadcastReceiver {
 
         int Puerto= Integer.parseInt(mispreferencias.getString("edit_Port", "9001"));
 
-        Toast.makeText(contexto, "Sistema Sobre Baterias", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Sistema Sobre Baterias", Toast.LENGTH_SHORT).show();
     /*   SmsManager manager = SmsManager.getDefault();
         PendingIntent sentIntent = PendingIntent.getActivity(contexto, 0, new Intent(), 0);
         PendingIntent deliveryIntent = PendingIntent.getActivity(contexto, 0, new Intent(), 0);*/

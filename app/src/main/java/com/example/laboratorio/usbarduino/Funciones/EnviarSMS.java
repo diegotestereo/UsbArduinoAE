@@ -1,4 +1,4 @@
-package com.example.laboratorio.usbarduino;
+package com.example.laboratorio.usbarduino.Funciones;
 
 import android.app.PendingIntent;
 import android.content.Context;

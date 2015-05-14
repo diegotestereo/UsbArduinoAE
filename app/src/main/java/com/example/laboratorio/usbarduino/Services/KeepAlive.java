@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.laboratorio.usbarduino.ConexionIP;
+import com.example.laboratorio.usbarduino.Funciones.ConexionIP;
 
 /**
  * Created by Diego on 09/05/2015.

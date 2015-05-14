@@ -7,18 +7,17 @@ import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.example.laboratorio.usbarduino.Actividades.MainActivity;
-import com.example.laboratorio.usbarduino.ConexionIP;
+import com.example.laboratorio.usbarduino.Funciones.ConexionIP;
 
 /**
  * Created by Diego on 30/04/2015.
  */
 public class Booteo extends BroadcastReceiver {
-Context contexto;
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        this.contexto=context;
+
         Intent intento= new Intent(context,MainActivity.class);
         intento.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intento);

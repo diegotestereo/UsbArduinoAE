@@ -60,6 +60,12 @@
         </receiver>
 
         <service android:name=".Services.KeepAlive"/>
+        <activity android:name=".Actividades.Lay_Configuracion"></activity>
+        <receiver android:name=".broadcastreceivers.SmsRecibido">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

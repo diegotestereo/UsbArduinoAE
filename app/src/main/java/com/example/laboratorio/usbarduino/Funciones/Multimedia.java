@@ -1,7 +1,9 @@
-package com.example.laboratorio.usbarduino;
+package com.example.laboratorio.usbarduino.Funciones;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+
+import com.example.laboratorio.usbarduino.R;
 
 /**
  * Created by Diego on 14/05/2015.
@@ -20,7 +22,7 @@ int Alarma;
 
         this.Alarma=Alarma;
 
-        mp2= MediaPlayer.create(contexto,R.raw.alarmadeintrusion);
+        mp2= MediaPlayer.create(contexto, R.raw.alarmadeintrusion);
         mp3= MediaPlayer.create(contexto,R.raw.alarmadeapertura);
         mp4= MediaPlayer.create(contexto,R.raw.alarmadeenergia);
 
