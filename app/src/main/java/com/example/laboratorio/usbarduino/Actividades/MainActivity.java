@@ -20,6 +20,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -37,8 +39,8 @@ import android.widget.ToggleButton;
 import com.example.laboratorio.usbarduino.CheckAlarmas;
 import com.example.laboratorio.usbarduino.Multimedia;
 import com.example.laboratorio.usbarduino.R;
-import com.example.laboratorio.usbarduino.EnviarSMS;
 import com.example.laboratorio.usbarduino.Services.KeepAlive;
+import com.example.laboratorio.usbarduino.TomarFoto;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -89,9 +91,9 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private UsbEndpoint endpointIn = null;
     private Thread RX, Audio;
     static final String TAG = "USB_ARDUINO";
+    TomarFoto tomarfoto;
 
-
-    int  IdRadiobase;
+    int  IdRadiobase=0;
     Intent intentKeepAlive;
 
     String IpPublica;
@@ -106,7 +108,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         setContentView(R.layout.activity_main);
         LevantarXML();
         Botones();
-        CAMARA_ON();
+
+       CAMARA_ON();
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
 
         IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
@@ -118,6 +121,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     @Override
     public void onResume() {
         super.onResume();
+
         CargarPreferencias();
 
        Intent intent = getIntent();
@@ -151,6 +155,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     @Override
     protected void onStop() {
         super.onStop();
+       // CAMARA_ON();
       //  releaseMediaRecorder();       // if you are using MediaRecorder, release it first
        // releaseCamera();              // release the camera immediately on pause event
         GuardarPreferencias();
@@ -160,8 +165,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        releaseMediaRecorder();       // if you are using MediaRecorder, release it first
-        releaseCamera();              // release the camera immediately on pause event
+     //   releaseMediaRecorder();       // if you are using MediaRecorder, release it first
+      //  releaseCamera();              // release the camera immediately on pause event
         GuardarPreferencias();
         Log.d(TAG, "OnDestroy");
 
@@ -170,7 +175,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private void CAMARA_ON() {
         mCamera = getCameraInstance();
         mPreview = new CameraPreview(getApplicationContext(), mCamera);
-        preview.addView(mPreview);
+  preview.addView(mPreview);
+
     }
 
     ////////////////////////// SMS ++++++++////////////////////
@@ -185,6 +191,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                        Log.d(TAG, "Alarma Activada");
+
               } else {
                     Log.d(TAG, "Alarma Desac" +
                             "tivada");
@@ -195,8 +202,16 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         btn_Foto.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
+              //  CAMARA_ON();
                 mCamera.takePicture(null, null, mPicture);
                 Log.d(TAG, "Boton de Foto");
+              //    releaseMediaRecorder();       // if you are using MediaRecorder, release it first
+             //   releaseCamera();
+               // preview.clearAnimation();
+
+                    //preview.clearDisappearingChildren();
+
 
             }
 
@@ -216,10 +231,15 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
             @Override
             public void onClick(View v) {
-               EnviarSMS  sms=new EnviarSMS(getApplicationContext(),TelDiego,"hola");
-                sms.sendSMS();
-            Log.d(TAG, "Boton de foto alarma");
-            edit_IP.setText("200.51.82.70");
+           //    EnviarSMS  sms=new EnviarSMS(getApplicationContext(),TelDiego,"hola");
+          //      sms.sendSMS();
+                Log.d(TAG, "Boton de foto alarma");
+                edit_IP.setText("200.51.82.70");
+               // releaseMediaRecorder();       // if you are using MediaRecorder, release it first
+               // releaseCamera();
+            //    mPreview = new CameraPreview(getApplicationContext(), mCamera);
+            //   preview.addView(mPreview);
+            //    CAMARA_ON();
 
             }
         });
@@ -229,7 +249,13 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             public void onClick(View v) {
 
                 Log.d(TAG, "Alarma Intrusion");
-           //     mCamera.takePicture(null, null, mPicture);
+                releaseCamera();
+                releaseMediaRecorder();
+              //  mPreview.clearAnimation();
+              //  preview.clearDisappearingChildren();
+
+                Log.d(TAG, "releaseCamera");
+               // mCamera.takePicture(null, null, mPicture);
                 textIn.setText("2");
                 if(toggleAudio.isChecked()){
                     Multimedia Alarma=new Multimedia(getApplicationContext(),2);
@@ -241,7 +267,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
             @Override
             public void onClick(View v) {
-
+//preview.addView(mPreview);
                //sendSMS(TelDiego, Alarma_1);
                 Log.d(TAG, "Alarma de Apertura");
 
@@ -258,7 +284,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             @Override
             public void onClick(View v) {
 
-                //sendSMS(TelDiego, Alarma_1);
+
           //     mCamera.takePicture(null, null, mPicture);
                 Log.d(TAG, "Alarma de Energia");
                 textIn.setText("4");
@@ -433,7 +459,6 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         Log.d(TAG, "XML LEvantado");
 
     }
-
 
     private void setDevice(UsbDevice device) {
         usbInterfaceFound = null;
@@ -610,9 +635,14 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         {
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
         }
-
+        parameters.setRotation(90);
         parameters.setJpegQuality(calidadFoto);
+        //  String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      //  parameters.setGpsTimestamp(Long.parseLong(timeStamp));
+       // parameters.setZoom(4);
+
         parameters.setVideoStabilization(true);
+
 
         mCamera.setParameters(parameters);
         Log.d(TAG,"Parametros de la Camara Cargados");
@@ -740,6 +770,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
 
         mMediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_480P));
+
         // Step 4: Set output file
         mMediaRecorder.setOutputFile(getOutputMediaFile(MEDIA_TYPE_VIDEO).toString());
         // Step 5: Set the preview output
@@ -824,7 +855,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     }
 
 ///////////////////// PREFERENCIAS DE USUARIO ////////////////
- public void CargarPreferencias(){
+    public void CargarPreferencias(){
 
      SharedPreferences mispreferencias=getSharedPreferences("PreferenciasUsuario", Context.MODE_PRIVATE);
 
@@ -856,5 +887,26 @@ Log.d(TAG,"Preferencias Cargadas");
 
 
 // //////////////////////////////////////////////////////////
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.menu_main, menu);
+    return true;
+}
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }
