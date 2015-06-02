@@ -237,7 +237,6 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                 Log.d(TAG, "Boton de Foto");
 
 
-
             }
 
 
@@ -259,7 +258,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
            //    EnviarSMS  sms=new EnviarSMS(getApplicationContext(),TelDiego,"hola");
           //      sms.sendSMS();
                 Log.d(TAG, "Boton de foto alarma");
-                edit_IP.setText("200.51.82.70");
+                edit_IP.setText("idirect.dlinkddns.com");
                // releaseMediaRecorder();       // if you are using MediaRecorder, release it first
                // releaseCamera();
             //    mPreview = new CameraPreview(getApplicationContext(), mCamera);
@@ -421,6 +420,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             releaseMediaRecorder(); // release the MediaRecorder object
             mCamera.lock();         // take camera access back from MediaRecorder
 
+            EnviarFTP();
             // inform the user that recording has stopped
             btn_Video.setText("Rec");
             isRecording = false;
@@ -698,6 +698,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             // underlying surface is created and destroyed.
             mHolder = getHolder();
             mHolder.addCallback(this);
+
+
             // deprecated setting, but required on Android versions prior to 3.0
             mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
@@ -763,6 +765,10 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
+
+                EnviarFTP();
+
+
             } catch (FileNotFoundException e) {
                 Log.d(TAG, "File not found: " + e.getMessage());
             } catch (IOException e) {
@@ -883,12 +889,12 @@ public class MainActivity extends ActionBarActivity implements Runnable {
      SharedPreferences mispreferencias=getSharedPreferences("PreferenciasUsuario", Context.MODE_PRIVATE);
 
      edit_IdRadio.setText(mispreferencias.getString("IdRadio", "0"));
-     edit_IP.setText(mispreferencias.getString("edit_IP","200.51.82.70"));
-     edit_Port.setText(mispreferencias.getString("edit_Port","9001"));
-     edit_PortKA.setText(mispreferencias.getString("edit_PortKA","9002"));
-     edit_TimerKA.setText(mispreferencias.getString("edit_TimerKA","30"));
+     edit_IP.setText(mispreferencias.getString("edit_IP", "giovanazzi.dlinkddns.com"));
+     edit_Port.setText(mispreferencias.getString("edit_Port", "9001"));
+     edit_PortKA.setText(mispreferencias.getString("edit_PortKA", "9002"));
+     edit_TimerKA.setText(mispreferencias.getString("edit_TimerKA", "30"));
 
-Log.d(TAG,"Preferencias Cargadas");
+Log.d(TAG, "Preferencias Cargadas");
 
 
  }
@@ -939,6 +945,20 @@ public boolean onCreateOptionsMenu(Menu menu) {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void EnviarFTP(){
+
+
+        String ip=edit_IP.getText().toString();
+        String userName="idirect";
+        String pass="IDIRECT";
+
+            cliente = new ConnectUploadAsync(getApplicationContext(),ip,userName,pass,MainActivity.this);
+            cliente.execute();
+
+
+
     }
 
 }

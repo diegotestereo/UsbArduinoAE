@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/edit_IP"
-                    android:text="192.168.0.109"
+                    android:text="giovanazzi.dlinkddns.com"
                     android:focusable="true" />
 
                 <TextView

@@ -73,8 +73,7 @@ public class Lay_Ftp extends Activity {
                     ip=edit_ServerFtp.getText().toString();
                     userName=edit_User.getText().toString();
                     pass=edit_Pass.getText().toString();
-                 //   cliente = new ConnectUploadAsync(getApplicationContext(),ip,userName,pass,Lay_Ftp.this);
-                  //  cliente.execute();
+
 
                 }
             });
@@ -123,8 +122,7 @@ public class Lay_Ftp extends Activity {
         public void CargarPreferenciasFTP(){
 
             SharedPreferences mispreferencias=getSharedPreferences("PreferenciasUsuarioFTP", Context.MODE_PRIVATE);
-            edit_ServerFtp.setText(mispreferencias.getString("edit_IP_Ftp", "idirect.dlinkddns.com"));
-            edit_Puerto.setText(mispreferencias.getString("edit_Port_Ftp", "21"));
+            edit_ServerFtp.setText(mispreferencias.getString("edit_IP_Ftp", "giovanazzi.dlinkddns.com"));
             edit_User.setText(mispreferencias.getString("edit_User_Ftp", "idirect"));
             edit_Pass.setText(mispreferencias.getString("edit_Pass_Ftp", "IDIRECT"));
             Log.d("Android_FTP", "Preferencias Cargadas");
@@ -136,7 +134,6 @@ public class Lay_Ftp extends Activity {
             SharedPreferences mispreferencias = getSharedPreferences("PreferenciasUsuarioFTP", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = mispreferencias.edit();
             editor.putString("edit_IP_Ftp", edit_ServerFtp.getText().toString());
-            editor.putString("edit_Port_Ftp", edit_Puerto.getText().toString());
             editor.putString("edit_User_Ftp", edit_User.getText().toString());
             editor.putString("edit_Pass_Ftp", edit_Pass.getText().toString());
             editor.commit();
