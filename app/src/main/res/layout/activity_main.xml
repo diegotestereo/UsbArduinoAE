@@ -262,7 +262,46 @@
                     android:layout_width="112dp"
                     android:layout_height="wrap_content"
                     android:text="Enviar Usb" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FTP Conf"
+                    android:id="@+id/btn_Conf_FTP" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="enviar FTP"
+                    android:id="@+id/btn_Enviar_FTP" />
             </LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bytes Transferidos: "
+                    android:id="@+id/textView24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-------------"
+                    android:id="@+id/text_Bytes" />
+            </LinearLayout>
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="354dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBar"
+                android:indeterminate="false"
+                android:max="100" />
 
         </LinearLayout>
     </ScrollView>

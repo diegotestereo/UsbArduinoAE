@@ -31,16 +31,18 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.laboratorio.usbarduino.Ftp.ConnectUploadAsync;
 import com.example.laboratorio.usbarduino.Funciones.CheckAlarmas;
 import com.example.laboratorio.usbarduino.Funciones.Multimedia;
+import com.example.laboratorio.usbarduino.Funciones.TomarFoto;
 import com.example.laboratorio.usbarduino.R;
 import com.example.laboratorio.usbarduino.Services.KeepAlive;
-import com.example.laboratorio.usbarduino.Funciones.TomarFoto;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -64,10 +66,11 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
     ToggleButton buttonLed,toggleAudio, toogleAlarma,toggle_ka;
     Switch switch_button;
-    EditText textOut,edit_IP,edit_Port,edit_IdRadio,textIn,edit_TimerKA,edit_PortKA;
+    static EditText textOut,edit_IP,edit_Port,edit_IdRadio,textIn,edit_TimerKA,edit_PortKA;
     Button buttonSend, btn_Prueba, btn_Foto, btn_Video, btn_Intrusion;
-    Button btn_Energia,btn_Apertura;
-    TextView  textAlarma1;
+    Button btn_Energia,btn_Apertura,btn_Conf_FTP,btn_Enviar_FTP;
+   public  TextView  textAlarma1,text_Bytes;
+  public   ProgressBar progressBar;
 
     String stringToRx;
     File ImagenFile;
@@ -95,7 +98,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
     int  IdRadiobase=0;
     Intent intentKeepAlive;
-
+   public   ConnectUploadAsync cliente;
     String IpPublica;
 
     String TelDiego="2235776581";
@@ -118,6 +121,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
         Log.d(TAG, "OnCreate");
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -141,7 +145,6 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         Log.d(TAG, "OnResume");
   }
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -155,9 +158,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     @Override
     protected void onStop() {
         super.onStop();
-       // CAMARA_ON();
-      //  releaseMediaRecorder();       // if you are using MediaRecorder, release it first
-       // releaseCamera();              // release the camera immediately on pause event
+
         GuardarPreferencias();
         Log.d(TAG, "onStop");
     }
@@ -165,7 +166,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-     //   releaseMediaRecorder();       // if you are using MediaRecorder, release it first
+        releaseMediaRecorder();       // if you are using MediaRecorder, release it first
       //  releaseCamera();              // release the camera immediately on pause event
         GuardarPreferencias();
         Log.d(TAG, "OnDestroy");
@@ -186,6 +187,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private void Botones() {
 
 
+
         switch_button.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -199,18 +201,41 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             }
         });
 
+
+        btn_Enviar_FTP.setOnClickListener(new OnClickListener() {
+
+            String ip=edit_IP.getText().toString();
+            String userName="idirect";
+            String pass="IDIRECT";
+
+            @Override
+            public void onClick(View v) {
+
+        cliente = new ConnectUploadAsync(getApplicationContext(),ip,userName,pass,MainActivity.this);
+               cliente.execute();
+
+            }
+        });
+
+        btn_Conf_FTP.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intento=new Intent(getApplicationContext(),Lay_Ftp.class);
+
+                startActivity(intento);
+
+            }
+        });
+
         btn_Foto.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
-              //  CAMARA_ON();
+
                 mCamera.takePicture(null, null, mPicture);
                 Log.d(TAG, "Boton de Foto");
-              //    releaseMediaRecorder();       // if you are using MediaRecorder, release it first
-             //   releaseCamera();
-               // preview.clearAnimation();
 
-                    //preview.clearDisappearingChildren();
 
 
             }
@@ -249,13 +274,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             public void onClick(View v) {
 
                 Log.d(TAG, "Alarma Intrusion");
-                releaseCamera();
-                releaseMediaRecorder();
-              //  mPreview.clearAnimation();
-              //  preview.clearDisappearingChildren();
+                mCamera.takePicture(null, null, mPicture);
 
-                Log.d(TAG, "releaseCamera");
-               // mCamera.takePicture(null, null, mPicture);
                 textIn.setText("2");
                 if(toggleAudio.isChecked()){
                     Multimedia Alarma=new Multimedia(getApplicationContext(),2);
@@ -267,10 +287,9 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
             @Override
             public void onClick(View v) {
-//preview.addView(mPreview);
-               //sendSMS(TelDiego, Alarma_1);
-                Log.d(TAG, "Alarma de Apertura");
 
+                Log.d(TAG, "Alarma de Apertura");
+                mCamera.takePicture(null, null, mPicture);
                 textIn.setText("3");
                 if(toggleAudio.isChecked()){
                     Multimedia Alarma=new Multimedia(getApplicationContext(),3);
@@ -285,7 +304,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             public void onClick(View v) {
 
 
-          //     mCamera.takePicture(null, null, mPicture);
+               mCamera.takePicture(null, null, mPicture);
                 Log.d(TAG, "Alarma de Energia");
                 textIn.setText("4");
                 if(toggleAudio.isChecked()){
@@ -434,6 +453,9 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         textAlarma1 = (TextView) findViewById(R.id.textAlarma1);
         textOut = (EditText) findViewById(R.id.textout);
         textIn = (EditText) findViewById(R.id.textin);
+        text_Bytes=(TextView)findViewById(R.id.text_Bytes);
+
+        progressBar=(ProgressBar)findViewById(R.id.progressBar);
 
         edit_IP =(EditText)findViewById(R.id.edit_IP);
         edit_Port=(EditText)findViewById(R.id.edit_Port);
@@ -451,7 +473,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         btn_Energia = (Button) findViewById(R.id.btn_Energia);
         btn_Prueba = (Button) findViewById(R.id.btn_Prueba);
         btn_Apertura = (Button) findViewById(R.id.btn_Apertura);
-
+        btn_Conf_FTP= (Button) findViewById(R.id.btn_Conf_FTP);
+        btn_Enviar_FTP=(Button) findViewById(R.id.btn_Enviar_FTP);
         switch_button = (Switch) findViewById(R.id.switch_Alarma);
 
         preview = (FrameLayout) findViewById(R.id.camera_preview);
@@ -829,7 +852,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
+                    "Radiobase_"+edit_IdRadio.getText().toString()+"_IMG_"+ timeStamp + ".jpg");
         } else if(type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "VID_"+ timeStamp + ".mp4");

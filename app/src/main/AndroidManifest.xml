@@ -27,7 +27,6 @@
             android:label="@string/app_name">
 
 
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -42,6 +41,8 @@
                 <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
             </intent-filter>
      </activity>
+        <activity android:name=".Actividades.Lay_Ftp"></activity>
+        <activity android:name=".Actividades.Lay_Configuracion"></activity>
         <receiver android:name=".broadcastreceivers.Booteo">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
