@@ -75,6 +75,13 @@
                     android:text="giovanazzi.dlinkddns.com"
                     android:focusable="true" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -83,13 +90,12 @@
                     android:id="@+id/textView8" />
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="77dp"
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/edit_Port"
-                    android:text="9001"
-                    android:layout_weight="1" />
+                    android:text="9001" />
 
             </LinearLayout>
 
@@ -138,13 +144,12 @@
                     android:id="@+id/textView9" />
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="72dp"
                     android:layout_height="wrap_content"
                     android:inputType="time"
                     android:ems="10"
                     android:id="@+id/edit_PortKA"
-                    android:text="9002"
-                    android:layout_weight="1" />
+                    android:text="9002" />
             </LinearLayout>
 
             <LinearLayout
