@@ -8,7 +8,7 @@ import android.util.Log;
  * Created by Diego on 09/05/2015.
  */
 public class CheckAlarmas extends Thread{
-
+    Multimedia Audio;
     String Alarma,IpPublica,msg;
     ConexionIP ClienteTCP;
     int Puerto,IdRadiobase;
@@ -33,21 +33,15 @@ public class CheckAlarmas extends Thread{
        switch (Alarma){
 
            case "2":
-
-              //     mCamera.takePicture(null, null, mPicture);
-               // Filmacion();
-               //   sendSMS("2235776581", "Alarma de Intrusin");
-
-               msg=Mensaje(IdRadiobase,2);
+               Audio =new Multimedia(contex,2);
+               Audio.AudioPlay();
+        msg=Mensaje(IdRadiobase,2);
             ClienteTCP=new ConexionIP(IpPublica,Puerto,msg);
  ClienteTCP.start();
      break;
            case "3":
-
-           //      mCamera.takePicture(null, null, mPicture);
-               // Filmacion();
-               //   sendSMS("2235776581", "Alarma de Intrusin");
-
+               Audio =new Multimedia(contex,3);
+               Audio.AudioPlay();
                msg=Mensaje(IdRadiobase,3);
                ClienteTCP=new ConexionIP(IpPublica,Puerto,msg);
 
@@ -56,12 +50,9 @@ public class CheckAlarmas extends Thread{
 
                break;
            case "4":
-
-             //      mCamera.takePicture(null, null, mPicture);
-               // Filmacion();
-               //   sendSMS("2235776581", "Alarma de Intrusin");
-
-               msg=Mensaje(IdRadiobase,4);
+               Audio =new Multimedia(contex,4);
+               Audio.AudioPlay();
+              msg=Mensaje(IdRadiobase,4);
                ClienteTCP=new ConexionIP(IpPublica,Puerto,msg);
                ClienteTCP.start();
                break;
