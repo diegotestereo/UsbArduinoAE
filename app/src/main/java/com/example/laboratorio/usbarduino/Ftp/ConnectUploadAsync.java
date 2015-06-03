@@ -182,7 +182,7 @@ public class ConnectUploadAsync extends AsyncTask <Void,Integer,Boolean> {
         else{
          Toast.makeText(contexto,"no se pudo transmitir"+o,Toast.LENGTH_SHORT).show();
                 }
-        Toast.makeText(contexto,"Errores:"+Errores,Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(contexto,"Errores:"+Errores,Toast.LENGTH_SHORT).show();
     }
 
 

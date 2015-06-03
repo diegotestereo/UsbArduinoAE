@@ -167,7 +167,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     protected void onDestroy() {
         super.onDestroy();
         releaseMediaRecorder();       // if you are using MediaRecorder, release it first
-      //  releaseCamera();              // release the camera immediately on pause event
+        releaseCamera();              // release the camera immediately on pause event
         GuardarPreferencias();
         Log.d(TAG, "OnDestroy");
 
@@ -861,7 +861,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                     "Radiobase_"+edit_IdRadio.getText().toString()+"_IMG_"+ timeStamp + ".jpg");
         } else if(type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_"+ timeStamp + ".mp4");
+                    "Radiobase_"+edit_IdRadio.getText().toString()+"VID_"+ timeStamp + ".mp4");
         } else {
             return null;
         }
@@ -888,11 +888,11 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
      SharedPreferences mispreferencias=getSharedPreferences("PreferenciasUsuario", Context.MODE_PRIVATE);
 
-     edit_IdRadio.setText(mispreferencias.getString("IdRadio", "0"));
-     edit_IP.setText(mispreferencias.getString("edit_IP", "giovanazzi.dlinkddns.com"));
+     edit_IdRadio.setText(mispreferencias.getString("IdRadio", "1"));
+     edit_IP.setText(mispreferencias.getString("edit_IP", "idirect.dlinkddns.com"));
      edit_Port.setText(mispreferencias.getString("edit_Port", "9001"));
      edit_PortKA.setText(mispreferencias.getString("edit_PortKA", "9002"));
-     edit_TimerKA.setText(mispreferencias.getString("edit_TimerKA", "30"));
+     edit_TimerKA.setText(mispreferencias.getString("edit_TimerKA", "15"));
 
 Log.d(TAG, "Preferencias Cargadas");
 
