@@ -67,6 +67,7 @@ public class CheckAlarmas extends Thread{
                break;
            default:
 
+               Log.d(TAG,"Alarma Default");
                     break;
 
        }

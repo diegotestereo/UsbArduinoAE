@@ -103,8 +103,6 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
     String TelDiego="2235776581";
 
-    // String foto = Environment.getExternalStorageDirectory() + "/Radiobase.jpg";
-    //   private File ImagenFile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,9 +149,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
      //     releaseMediaRecorder();       // if you are using MediaRecorder, release it first
        //      releaseCamera();              // release the camera immediately on pause event
         Log.d(TAG, "On Pause");
-        GuardarPreferencias();
+    //    GuardarPreferencias();
     }
-
 
     @Override
     protected void onStop() {
@@ -168,7 +165,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         super.onDestroy();
         releaseMediaRecorder();       // if you are using MediaRecorder, release it first
         releaseCamera();              // release the camera immediately on pause event
-        GuardarPreferencias();
+     //   GuardarPreferencias();
         Log.d(TAG, "OnDestroy");
 
     }
@@ -176,7 +173,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private void CAMARA_ON() {
         mCamera = getCameraInstance();
         mPreview = new CameraPreview(getApplicationContext(), mCamera);
-  preview.addView(mPreview);
+            preview.addView(mPreview);
 
     }
 
@@ -264,6 +261,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             //    mPreview = new CameraPreview(getApplicationContext(), mCamera);
             //   preview.addView(mPreview);
             //    CAMARA_ON();
+                mCamera.takePicture(null, null, mPicture);
 
             }
         });
@@ -273,7 +271,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             public void onClick(View v) {
 
                 Log.d(TAG, "Alarma Intrusion");
-                mCamera.takePicture(null, null, mPicture);
+    //            mCamera.takePicture(null, null, mPicture);
 
                 textIn.setText("2");
                 if(toggleAudio.isChecked()){
@@ -288,7 +286,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             public void onClick(View v) {
 
                 Log.d(TAG, "Alarma de Apertura");
-                mCamera.takePicture(null, null, mPicture);
+         //       mCamera.takePicture(null, null, mPicture);
                 textIn.setText("3");
                 if(toggleAudio.isChecked()){
                     Multimedia Alarma=new Multimedia(getApplicationContext(),3);
@@ -303,7 +301,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             public void onClick(View v) {
 
 
-               mCamera.takePicture(null, null, mPicture);
+        //       mCamera.takePicture(null, null, mPicture);
                 Log.d(TAG, "Alarma de Energia");
                 textIn.setText("4");
                 if(toggleAudio.isChecked()){
@@ -396,14 +394,20 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             @Override
             public void afterTextChanged(Editable s) {
 
-                Log.d(TAG, "Alarmeta");
-                String IP=edit_IP.getText().toString();
-                int Port=Integer.parseInt(edit_Port.getText().toString());
-                int IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
-                Log.d(TAG,"IdRadiobase:"+IdRadiobase);
-                String Alarma=textIn.getText().toString();
-                CheckAlarmas CheckAlarmita=new CheckAlarmas(IdRadiobase,Alarma,IP,Port,getApplicationContext());
-                CheckAlarmita.start();
+                Log.d(TAG,"Tesxtin: "+textIn.getText().toString());
+                if(!textIn.getText().toString().equals("F")) {
+
+                    mCamera.takePicture(null, null, mPicture);
+                    Log.d(TAG, "Alarmeta");
+                    String IP = edit_IP.getText().toString();
+                    int Port = Integer.parseInt(edit_Port.getText().toString());
+                    int IdRadiobase = Integer.parseInt(edit_IdRadio.getText().toString());
+                    Log.d(TAG, "IdRadiobase:" + IdRadiobase);
+                    String Alarma = textIn.getText().toString();
+                    CheckAlarmas CheckAlarmita = new CheckAlarmas(IdRadiobase, Alarma, IP, Port, getApplicationContext());
+                    CheckAlarmita.start();
+                    textIn.setText("F");
+                }
 
 
 
@@ -960,5 +964,8 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
 
     }
+
+
+
 
 }
