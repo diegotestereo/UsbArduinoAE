@@ -110,13 +110,14 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         LevantarXML();
         Botones();
 
-       CAMARA_ON();
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+
+
 
         IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
         IpPublica=edit_IP.getText().toString();
         BotonesEnabled(false);
-
+        CAMARA_ON();
         Log.d(TAG, "OnCreate");
     }
 
@@ -124,12 +125,14 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     public void onResume() {
         super.onResume();
 
+
+
         CargarPreferencias();
 
        Intent intent = getIntent();
         String action = intent.getAction();
 
-        UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+        UsbDevice device =intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
         if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
             setDevice(device);
             Toast.makeText(getApplicationContext(), "USB Conectado", Toast.LENGTH_SHORT).show();
@@ -155,7 +158,6 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     @Override
     protected void onStop() {
         super.onStop();
-
         GuardarPreferencias();
         Log.d(TAG, "onStop");
     }
@@ -165,7 +167,6 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         super.onDestroy();
         releaseMediaRecorder();       // if you are using MediaRecorder, release it first
         releaseCamera();              // release the camera immediately on pause event
-     //   GuardarPreferencias();
         Log.d(TAG, "OnDestroy");
 
     }
@@ -620,6 +621,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         ByteBuffer buffer = ByteBuffer.allocate(1);
         UsbRequest request = new UsbRequest();
         request.initialize(usbDeviceConnection, endpointIn);
+
         while (true) {
 
             request.queue(buffer, 1);
@@ -646,6 +648,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             }
         }
     }
+
     ///////////////  CheckAlarmas///////////////
 
     ////////////////////////// ++++   FOTO y VIDEO +++++ /////////////////

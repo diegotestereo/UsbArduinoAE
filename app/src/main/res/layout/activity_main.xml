@@ -223,34 +223,38 @@
                     android:id="@+id/btn_Energia" />
             </LinearLayout>
 
-            <FrameLayout
-                android:layout_width="187dp"
-                android:layout_height="149dp"
-                android:id="@+id/camera_preview"
-                android:layout_gravity="center">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <SurfaceView
-                    android:layout_width="match_parent"
+                <Button
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/surfaceView"
-                    android:layout_weight="0.63"
-                    android:layout_gravity="center" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="video"
-                    android:id="@+id/btn_Video"
-                    android:layout_gravity="left|bottom" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="foto"
-                    android:id="@+id/btn_Captura"
-                    android:layout_gravity="right|bottom" />
+                    android:id="@+id/btn_Captura" />
 
-            </FrameLayout>
+                <FrameLayout
+                    android:layout_width="187dp"
+                    android:layout_height="149dp"
+                    android:id="@+id/camera_preview"
+                    android:layout_gravity="center">
+
+                    <SurfaceView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/surfaceView"
+                        android:layout_weight="0.63"
+                        android:layout_gravity="center" />
+
+                </FrameLayout>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="video"
+                    android:id="@+id/btn_Video" />
+            </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"

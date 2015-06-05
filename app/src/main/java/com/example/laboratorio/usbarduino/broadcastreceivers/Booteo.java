@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
 import com.example.laboratorio.usbarduino.Actividades.MainActivity;
 import com.example.laboratorio.usbarduino.Funciones.ConexionIP;
@@ -29,7 +28,13 @@ public class Booteo extends BroadcastReceiver {
 
         ConexionIP ClienteTCP=new ConexionIP(IP,Puerto," 1 7");
         ClienteTCP.start();
-        Toast.makeText(context,"Sistema Reinicializado",Toast.LENGTH_SHORT).show();
+       // Toast.makeText(context,"Sistema Reinicializado",Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
 
 
     }
