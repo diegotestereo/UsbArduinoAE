@@ -106,6 +106,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate inicio");
+
         setContentView(R.layout.activity_main);
         LevantarXML();
         Botones();
@@ -118,56 +120,46 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         IpPublica=edit_IP.getText().toString();
         BotonesEnabled(false);
         CAMARA_ON();
-        Log.d(TAG, "OnCreate");
+        Log.d(TAG, "OnCreate fin");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        Log.d(TAG, "OnResume inicio");
 
 
         CargarPreferencias();
+        DetectarUSB();
 
-       Intent intent = getIntent();
-        String action = intent.getAction();
-
-        UsbDevice device =intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-        if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
-            setDevice(device);
-            Toast.makeText(getApplicationContext(), "USB Conectado", Toast.LENGTH_SHORT).show();
-        } else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
-            Toast.makeText(getApplicationContext(), "USB Desconectado", Toast.LENGTH_SHORT).show();
-
-            if (deviceFound != null && deviceFound.equals(device)) {
-                setDevice(null);
-            }
-        }
-        Log.d(TAG, "OnResume");
+        Log.d(TAG, "OnResume fin");
   }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(TAG, "OnPause inicio");
      //     releaseMediaRecorder();       // if you are using MediaRecorder, release it first
        //      releaseCamera();              // release the camera immediately on pause event
-        Log.d(TAG, "On Pause");
+        Log.d(TAG, "On Pause fin");
     //    GuardarPreferencias();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d(TAG, "OnStop inicio");
         GuardarPreferencias();
-        Log.d(TAG, "onStop");
+        Log.d(TAG, "onStop fin");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "OnDestroy inicio");
         releaseMediaRecorder();       // if you are using MediaRecorder, release it first
         releaseCamera();              // release the camera immediately on pause event
-        Log.d(TAG, "OnDestroy");
+        Log.d(TAG, "OnDestroy fin");
 
     }
 
@@ -489,6 +481,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     }
 
     private void setDevice(UsbDevice device) {
+        Log.d(TAG, "setDevice inicio");
         usbInterfaceFound = null;
         endpointOut = null;
         endpointIn = null;
@@ -543,9 +536,10 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                         7, 0);
 
                 usbDeviceConnection = connection;
-                Thread thread = new Thread(this);
 
+                Thread thread = new Thread(this);
                 thread.start();
+
                 Log.d(TAG, "USB Detectado");
 
             } else {
@@ -554,6 +548,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
             }
         }
+        Log.d(TAG, "setDevice final");
+
     }
 
     private void sendArduinoCommand(int control) {
@@ -617,6 +613,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
     @Override
     public void run() {
+        Log.d(TAG, "run");
 
         ByteBuffer buffer = ByteBuffer.allocate(1);
         UsbRequest request = new UsbRequest();
@@ -639,6 +636,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
                         @Override
                         public void run() {
+
                             textIn.setText(stringToRx);
                             Log.d(TAG, "Mensaje: '" + stringToRx + "' recibido del USB");
                             Log.d(TAG, "");
@@ -649,6 +647,26 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         }
     }
 
+    private void DetectarUSB(){
+
+        Log.d(TAG,"DetectarUSB() inicio");
+        Intent intent = getIntent();
+        String action = intent.getAction();
+
+        UsbDevice device =intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+        if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
+            setDevice(device);
+            Toast.makeText(getApplicationContext(), "USB Conectado", Toast.LENGTH_SHORT).show();
+        } else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
+            Toast.makeText(getApplicationContext(), "USB Desconectado", Toast.LENGTH_SHORT).show();
+
+            if (deviceFound != null && deviceFound.equals(device)) {
+                setDevice(null);
+            }
+        }
+
+        Log.d(TAG, "DetectarUSB() final");
+    }
     ///////////////  CheckAlarmas///////////////
 
     ////////////////////////// ++++   FOTO y VIDEO +++++ /////////////////
@@ -919,8 +937,6 @@ Log.d(TAG, "Preferencias Cargadas");
 
 
     }
-
-
 
 // //////////////////////////////////////////////////////////
 @Override
