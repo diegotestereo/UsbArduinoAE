@@ -28,14 +28,6 @@ public class Booteo extends BroadcastReceiver {
 
         ConexionIP ClienteTCP=new ConexionIP(IP,Puerto," 1 7");
         ClienteTCP.start();
-       // Toast.makeText(context,"Sistema Reinicializado",Toast.LENGTH_SHORT).show();
-
-
-
-
-
-
-
 
     }
 }

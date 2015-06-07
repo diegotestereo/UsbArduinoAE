@@ -39,7 +39,6 @@ import android.widget.ToggleButton;
 
 import com.example.laboratorio.usbarduino.Ftp.ConnectUploadAsync;
 import com.example.laboratorio.usbarduino.Funciones.CheckAlarmas;
-import com.example.laboratorio.usbarduino.Funciones.Multimedia;
 import com.example.laboratorio.usbarduino.Funciones.TomarFoto;
 import com.example.laboratorio.usbarduino.R;
 import com.example.laboratorio.usbarduino.Services.KeepAlive;
@@ -67,7 +66,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     ToggleButton buttonLed,toggleAudio, toogleAlarma,toggle_ka;
     Switch switch_button;
     static EditText textOut,edit_IP,edit_Port,edit_IdRadio,textIn,edit_TimerKA,edit_PortKA;
-    Button buttonSend, btn_Prueba, btn_Foto, btn_Video, btn_Intrusion;
+    Button buttonSend, btn_Prueba, btn_Foto, btn_Video, btn_Intrusion,btn_USB;
     Button btn_Energia,btn_Apertura,btn_Conf_FTP,btn_Enviar_FTP;
    public  TextView  textAlarma1,text_Bytes;
   public   ProgressBar progressBar;
@@ -95,7 +94,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private Thread RX, Audio;
     static final String TAG = "USB_ARDUINO";
     TomarFoto tomarfoto;
-
+    boolean audioBool=false;
     int  IdRadiobase=0;
     Intent intentKeepAlive;
    public   ConnectUploadAsync cliente;
@@ -112,7 +111,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         LevantarXML();
         Botones();
 
-        usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+       usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
 
 
 
@@ -130,7 +129,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
 
         CargarPreferencias();
-        DetectarUSB();
+       DetectarUSB();
 
         Log.d(TAG, "OnResume fin");
   }
@@ -218,6 +217,17 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             }
         });
 
+        btn_USB.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intento=new Intent(getApplicationContext(),Lay_Detectar_Usb.class);
+                startActivity(intento);
+              // checkInfo();
+
+            }
+        });
+
         btn_Foto.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,16 +255,6 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
             @Override
             public void onClick(View v) {
-           //    EnviarSMS  sms=new EnviarSMS(getApplicationContext(),TelDiego,"hola");
-          //      sms.sendSMS();
-                Log.d(TAG, "Boton de foto alarma");
-                edit_IP.setText("idirect.dlinkddns.com");
-               // releaseMediaRecorder();       // if you are using MediaRecorder, release it first
-               // releaseCamera();
-            //    mPreview = new CameraPreview(getApplicationContext(), mCamera);
-            //   preview.addView(mPreview);
-            //    CAMARA_ON();
-                mCamera.takePicture(null, null, mPicture);
 
             }
         });
@@ -264,12 +264,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             public void onClick(View v) {
 
                 Log.d(TAG, "Alarma Intrusion");
-    //            mCamera.takePicture(null, null, mPicture);
+          textIn.setText("2");
 
-                textIn.setText("2");
-                if(toggleAudio.isChecked()){
-                    Multimedia Alarma=new Multimedia(getApplicationContext(),2);
-                    Alarma.AudioPlay();}
 
             }
         });
@@ -279,11 +275,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             public void onClick(View v) {
 
                 Log.d(TAG, "Alarma de Apertura");
-         //       mCamera.takePicture(null, null, mPicture);
                 textIn.setText("3");
-                if(toggleAudio.isChecked()){
-                    Multimedia Alarma=new Multimedia(getApplicationContext(),3);
-                    Alarma.AudioPlay();}
+
 
 
             }
@@ -293,13 +286,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             @Override
             public void onClick(View v) {
 
-
-        //       mCamera.takePicture(null, null, mPicture);
-                Log.d(TAG, "Alarma de Energia");
+          Log.d(TAG, "Alarma de Energia");
                 textIn.setText("4");
-                if(toggleAudio.isChecked()){
-                Multimedia Alarma=new Multimedia(getApplicationContext(),4);
-                Alarma.AudioPlay();}
 
 
             }
@@ -329,8 +317,11 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             }
         });
         toggleAudio.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                audioBool=isChecked;
                 if(isChecked){
                     Log.d(TAG,"Audio ON");
                     Toast.makeText(getApplicationContext(),"Audio ON",Toast.LENGTH_SHORT).show();
@@ -397,7 +388,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                     int IdRadiobase = Integer.parseInt(edit_IdRadio.getText().toString());
                     Log.d(TAG, "IdRadiobase:" + IdRadiobase);
                     String Alarma = textIn.getText().toString();
-                    CheckAlarmas CheckAlarmita = new CheckAlarmas(IdRadiobase, Alarma, IP, Port, getApplicationContext());
+                    CheckAlarmas CheckAlarmita = new CheckAlarmas(IdRadiobase, Alarma, IP, Port, getApplicationContext(),audioBool);
                     CheckAlarmita.start();
                     textIn.setText("F");
                 }
@@ -472,6 +463,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         btn_Apertura = (Button) findViewById(R.id.btn_Apertura);
         btn_Conf_FTP= (Button) findViewById(R.id.btn_Conf_FTP);
         btn_Enviar_FTP=(Button) findViewById(R.id.btn_Enviar_FTP);
+        btn_USB=(Button) findViewById(R.id.btn_USB);
+
         switch_button = (Switch) findViewById(R.id.switch_Alarma);
 
         preview = (FrameLayout) findViewById(R.id.camera_preview);
@@ -479,6 +472,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         Log.d(TAG, "XML LEvantado");
 
     }
+
+    //////////////////   USB USB !!!!!
 
     private void setDevice(UsbDevice device) {
         Log.d(TAG, "setDevice inicio");
@@ -650,23 +645,32 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private void DetectarUSB(){
 
         Log.d(TAG,"DetectarUSB() inicio");
-        Intent intent = getIntent();
+
+       Intent intent = getIntent();
         String action = intent.getAction();
 
-        UsbDevice device =intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-        if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
+        Log.d(TAG,"action:"+action.toString());
+
+        UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+
+        Log.d(TAG,"UsbManager.EXTRA_DEVICE:"+UsbManager.EXTRA_DEVICE.toString());
+//        Log.d(TAG,"device:"+device.toString());
+
+       if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
             setDevice(device);
             Toast.makeText(getApplicationContext(), "USB Conectado", Toast.LENGTH_SHORT).show();
-        } else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
+       } else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
             Toast.makeText(getApplicationContext(), "USB Desconectado", Toast.LENGTH_SHORT).show();
 
             if (deviceFound != null && deviceFound.equals(device)) {
                 setDevice(null);
             }
-        }
+     }
 
         Log.d(TAG, "DetectarUSB() final");
+
     }
+
     ///////////////  CheckAlarmas///////////////
 
     ////////////////////////// ++++   FOTO y VIDEO +++++ /////////////////

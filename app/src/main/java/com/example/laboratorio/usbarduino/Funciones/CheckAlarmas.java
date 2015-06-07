@@ -16,15 +16,15 @@ public class CheckAlarmas extends Thread{
    // String static final TAG="USB_Arduino";
     Context contex;
      String  TAG="USB_Arduino";
-
-    public CheckAlarmas(int IdRadiobase,String Alarma,String IpPublica,int Puerto,Context contex){
+Boolean audioBool=false;
+    public CheckAlarmas(int IdRadiobase,String Alarma,String IpPublica,int Puerto,Context contex,boolean audioBool){
 
         this.Alarma=Alarma;
         this.IpPublica=IpPublica;
         this.Puerto=Puerto;
         this.contex=contex;
         this.IdRadiobase=IdRadiobase;
-
+        this.audioBool =audioBool;
 
     }
 
@@ -33,15 +33,16 @@ public class CheckAlarmas extends Thread{
        switch (Alarma){
 
            case "2":
+
                Audio =new Multimedia(contex,2);
-               Audio.AudioPlay();
+               if(audioBool){Audio.AudioPlay();}
         msg=Mensaje(IdRadiobase,2);
             ClienteTCP=new ConexionIP(IpPublica,Puerto,msg);
  ClienteTCP.start();
      break;
            case "3":
                Audio =new Multimedia(contex,3);
-               Audio.AudioPlay();
+               if(audioBool){Audio.AudioPlay();}
                msg=Mensaje(IdRadiobase,3);
                ClienteTCP=new ConexionIP(IpPublica,Puerto,msg);
 
@@ -51,7 +52,7 @@ public class CheckAlarmas extends Thread{
                break;
            case "4":
                Audio =new Multimedia(contex,4);
-               Audio.AudioPlay();
+               if(audioBool){Audio.AudioPlay();}
               msg=Mensaje(IdRadiobase,4);
                ClienteTCP=new ConexionIP(IpPublica,Puerto,msg);
                ClienteTCP.start();

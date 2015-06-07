@@ -189,6 +189,13 @@
                     android:text="off"
                     android:id="@+id/textAlarma1" />
 
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="usb"
+                    android:id="@+id/btn_USB" />
+
             </LinearLayout>
 
             <LinearLayout
