@@ -39,6 +39,7 @@ import android.widget.ToggleButton;
 
 import com.example.laboratorio.usbarduino.Ftp.ConnectUploadAsync;
 import com.example.laboratorio.usbarduino.Funciones.CheckAlarmas;
+import com.example.laboratorio.usbarduino.Funciones.ConexionIP;
 import com.example.laboratorio.usbarduino.Funciones.TomarFoto;
 import com.example.laboratorio.usbarduino.R;
 import com.example.laboratorio.usbarduino.Services.KeepAlive;
@@ -99,7 +100,8 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     Intent intentKeepAlive;
    public   ConnectUploadAsync cliente;
     String IpPublica;
-
+    int AlarmaFoto=11;
+     int AlarmaVideo=12;
     String TelDiego="2235776581";
 
     @Override
@@ -885,12 +887,24 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
+         String IP = edit_IP.getText().toString();
+       String idRadiobase = edit_IdRadio.getText().toString();
+        int Puerto=Integer.parseInt(edit_Port.getText().toString());
+
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "Radiobase_"+edit_IdRadio.getText().toString()+"_IMG_"+ timeStamp + ".jpg");
+
+
+           ConexionIP mensaje=new ConexionIP(IP,Puerto," "+idRadiobase+" 11");
+            mensaje.start();
+
         } else if(type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "Radiobase_"+edit_IdRadio.getText().toString()+"VID_"+ timeStamp + ".mp4");
+            ConexionIP mensaje=new ConexionIP(IP,Puerto," "+idRadiobase+" 12");
+            mensaje.start();
+
         } else {
             return null;
         }

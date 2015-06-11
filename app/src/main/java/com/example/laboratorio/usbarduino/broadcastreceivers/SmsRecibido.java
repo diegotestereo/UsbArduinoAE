@@ -16,20 +16,25 @@ import com.example.laboratorio.usbarduino.Funciones.ConexionIP;
  */
 public class SmsRecibido extends BroadcastReceiver {
    // Context contexto;
+   static final String TAG = "USB_ARDUINO";
 
+    int alarma=9;// SMS recibido
+    String IP;
+    int Puerto;
+    String  idRadiobase;
     @Override
     public void onReceive(Context context, Intent intent) {
        // this.contexto=context;
-        Toast.makeText(context,"Sms Recibido",Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(context,"Sms Recibido",Toast.LENGTH_SHORT).show();
 
         SharedPreferences mispreferencias=context.getSharedPreferences("PreferenciasUsuario", Context.MODE_PRIVATE);
-        String IP=mispreferencias.getString("edit_IP", "localhost");
+        IP=mispreferencias.getString("edit_IP", "localhost");
 
-        int Puerto=Integer.parseInt(mispreferencias.getString("edit_Port", "9001"));
-
-        ConexionIP ClienteTCP=new ConexionIP(IP,Puerto," 1 8");
+        Puerto=Integer.parseInt(mispreferencias.getString("edit_Port", "9001"));
+        idRadiobase  = mispreferencias.getString("IdRadio", "1");
+        ConexionIP ClienteTCP=new ConexionIP(IP,Puerto," "+idRadiobase+" "+alarma);
         ClienteTCP.start();
-
+        Log.d(TAG, "IP: " + IP + " Puerto: " + Puerto + " idRadiobase: " + idRadiobase + " alarma: " + alarma);
         Bundle b = intent.getExtras();
 
         if (b != null) {
