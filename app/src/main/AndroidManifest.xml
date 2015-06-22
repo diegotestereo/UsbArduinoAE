@@ -53,6 +53,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
+
+        <receiver android:name=".broadcastreceivers.BateriaBaja">
+            <intent-filter>
+                <action android:name="android.intent.action.battery_low"/>
+                          </intent-filter>
+        </receiver>
     <receiver android:name=".broadcastreceivers.SistemaEnBateria">
         <intent-filter>
             <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>

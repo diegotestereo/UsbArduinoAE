@@ -39,7 +39,6 @@ import android.widget.ToggleButton;
 
 import com.example.laboratorio.usbarduino.Ftp.ConnectUploadAsync;
 import com.example.laboratorio.usbarduino.Funciones.CheckAlarmas;
-import com.example.laboratorio.usbarduino.Funciones.ConexionIP;
 import com.example.laboratorio.usbarduino.Funciones.TomarFoto;
 import com.example.laboratorio.usbarduino.R;
 import com.example.laboratorio.usbarduino.Services.KeepAlive;
@@ -202,7 +201,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             @Override
             public void onClick(View v) {
 
-        cliente = new ConnectUploadAsync(getApplicationContext(),ip,userName,pass,MainActivity.this);
+        cliente = new ConnectUploadAsync(getApplicationContext(),ip,userName,pass,MainActivity.this,edit_IdRadio.getText().toString());
                cliente.execute();
 
             }
@@ -342,25 +341,36 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
 
                 if(isChecked){
-                    IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
-                    IpPublica=edit_IP.getText().toString();
+                    GuardarPreferencias();
+                    try{
+                        IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
+                        IpPublica=edit_IP.getText().toString();
 
-                    int Timer=Integer.parseInt(edit_TimerKA.getText().toString());
-                    intentKeepAlive=new Intent(getApplicationContext(), KeepAlive.class);
-                    intentKeepAlive.putExtra("Id",IdRadiobase );
-                    intentKeepAlive.putExtra("Ip", IpPublica);
-                    intentKeepAlive.putExtra("PuertoKA",Integer.parseInt(edit_PortKA.getText().toString()));
-                    intentKeepAlive.putExtra("bool",true);
-                    intentKeepAlive.putExtra("Timer", Timer);
-                    startService(intentKeepAlive);
-                    BotonesEnabled(isChecked);
+                        int Timer=Integer.parseInt(edit_TimerKA.getText().toString());
+                        intentKeepAlive=new Intent(getApplicationContext(), KeepAlive.class);
+                        intentKeepAlive.putExtra("Id",IdRadiobase );
+                        intentKeepAlive.putExtra("Ip", IpPublica);
+                        intentKeepAlive.putExtra("PuertoKA",Integer.parseInt(edit_PortKA.getText().toString()));
+                        intentKeepAlive.putExtra("bool",true);
+                        intentKeepAlive.putExtra("Timer", Timer);
+                        startService(intentKeepAlive);
+                        BotonesEnabled(isChecked);
+
+
+
+                    }catch(Exception e){
+
+                        Toast.makeText(getApplicationContext(),"Datos Erroneos en campos",Toast.LENGTH_SHORT).show();
+                    }
+
                 }else{
-                 stopService(intentKeepAlive);
+                    stopService(intentKeepAlive);
                     edit_TimerKA.setEnabled(true);
                     intentKeepAlive.putExtra("bool",false);
                     BotonesEnabled(isChecked);
 
                 }
+
 
 
             }
@@ -383,7 +393,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                 Log.d(TAG,"Tesxtin: "+textIn.getText().toString());
                 if(!textIn.getText().toString().equals("F")) {
 
-                    mCamera.takePicture(null, null, mPicture);
+
                     Log.d(TAG, "Alarmeta");
                     String IP = edit_IP.getText().toString();
                     int Port = Integer.parseInt(edit_Port.getText().toString());
@@ -392,6 +402,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
                     String Alarma = textIn.getText().toString();
                     CheckAlarmas CheckAlarmita = new CheckAlarmas(IdRadiobase, Alarma, IP, Port, getApplicationContext(),audioBool);
                     CheckAlarmita.start();
+                    mCamera.takePicture(null, null, mPicture);
                     textIn.setText("F");
                 }
 
@@ -768,6 +779,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             // set preview size and make any resize, rotate or
             // reformatting changes here
             mCamera.setDisplayOrientation(90);
+
             PARAMETROS();
 
             // start preview with new settings
@@ -887,23 +899,23 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
-         String IP = edit_IP.getText().toString();
+     /*    String IP = edit_IP.getText().toString();
        String idRadiobase = edit_IdRadio.getText().toString();
         int Puerto=Integer.parseInt(edit_Port.getText().toString());
-
+*/
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "Radiobase_"+edit_IdRadio.getText().toString()+"_IMG_"+ timeStamp + ".jpg");
+                    "ID_"+edit_IdRadio.getText().toString()+"_IMG_"+ timeStamp + ".jpg");
 
 
-           ConexionIP mensaje=new ConexionIP(IP,Puerto," "+idRadiobase+" 11");
-            mensaje.start();
+        //   ConexionIP mensaje=new ConexionIP(IP,Puerto," "+idRadiobase+" 11");
+        //    mensaje.start();
 
         } else if(type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "Radiobase_"+edit_IdRadio.getText().toString()+"VID_"+ timeStamp + ".mp4");
-            ConexionIP mensaje=new ConexionIP(IP,Puerto," "+idRadiobase+" 12");
-            mensaje.start();
+                    "ID_"+edit_IdRadio.getText().toString()+"_VID_"+ timeStamp + ".mp4");
+       //     ConexionIP mensaje=new ConexionIP(IP,Puerto," "+idRadiobase+" 12");
+         //   mensaje.start();
 
         } else {
             return null;
@@ -995,7 +1007,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
         String userName="idirect";
         String pass="IDIRECT";
 
-            cliente = new ConnectUploadAsync(getApplicationContext(),ip,userName,pass,MainActivity.this);
+            cliente = new ConnectUploadAsync(getApplicationContext(),ip,userName,pass,MainActivity.this,edit_IdRadio.getText().toString());
             cliente.execute();
 
 

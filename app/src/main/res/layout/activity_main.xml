@@ -55,6 +55,12 @@
                     android:textOff="off"
                     android:textOn="on" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bateria"
+                    android:id="@+id/text_NivelBattery" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -142,7 +148,7 @@
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/edit_TimerKA"
-                    android:text="15" />
+                    android:text="12" />
 
                 <TextView
                     android:layout_width="wrap_content"

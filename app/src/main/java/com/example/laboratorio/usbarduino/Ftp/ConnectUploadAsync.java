@@ -37,14 +37,15 @@ public class ConnectUploadAsync extends AsyncTask <Void,Integer,Boolean> {
     File fileLast;
     String ip, userName,pass;
     MainActivity ac;
-
-    public ConnectUploadAsync(Context contexto, String ip, String userName, String pass, MainActivity ac){
+    String IdRadiobase;
+    final static String TAG="Api FTP";
+    public ConnectUploadAsync(Context contexto, String ip, String userName, String pass, MainActivity ac,String IdRadiobase){
 
         this.contexto=contexto;
         this.ip=ip;
         this.userName=userName;
         this.pass=pass;
-
+this.IdRadiobase=IdRadiobase;
         this.ac=ac;
 
 
@@ -59,7 +60,10 @@ public class ConnectUploadAsync extends AsyncTask <Void,Integer,Boolean> {
             mFtpClient.setConnectTimeout(10 * 1000);
             mFtpClient.connect(InetAddress.getByName(ip));
             status = mFtpClient.login(userName, pass);
-            Log.d("Api FTP", "Se conecto: " + String.valueOf(status));
+
+
+
+            Log.d(TAG, "Se conecto: " + String.valueOf(status));
             if (FTPReply.isPositiveCompletion(mFtpClient.getReplyCode())) {
                 mFtpClient.setFileType(FTP.BINARY_FILE_TYPE);
                 mFtpClient.enterLocalPassiveMode();
@@ -69,17 +73,17 @@ public class ConnectUploadAsync extends AsyncTask <Void,Integer,Boolean> {
               //  Log.d("Api FTP", "Numeros de archivos" + String.valueOf(mFileArray.length));
 
                 for(int i=0;i<mFileArray.length;i++){
-                    Log.d("Api FTP","nombre archivo"+ mFileArray[i].getName());
+                    Log.d(TAG,"nombre archivo"+ mFileArray[i].getName());
                   }
 
-                Log.d("Api FTP", "IP Server:" + String.valueOf(mFtpClient.getRemoteAddress()));
+                Log.d(TAG, "IP Server:" + String.valueOf(mFtpClient.getRemoteAddress()));
 
 
 
                 // APPROACH #2: uploads second file using an OutputStream
 
                 //Defino la ruta donde busco los ficheros
-                File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Radiobases/");
+                File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Radiobases");
                 //Creo el array de tipo File con el contenido de la carpeta
                 File[] files = f.listFiles();
 
@@ -110,7 +114,21 @@ public class ConnectUploadAsync extends AsyncTask <Void,Integer,Boolean> {
 
             System.out.println("Start uploading second file");
 
-            OutputStream outputStream = mFtpClient.storeFileStream(secondRemoteFile);
+            boolean created =  mFtpClient.makeDirectory("ID_"+IdRadiobase);
+
+            if (created) {
+
+                // the directory is created, everything is going well
+                Log.d(TAG, "Directorio creado");
+
+            } else {
+                Log.d(TAG, "No se pudo Crear directorio");
+
+                // something unexpected happened...
+            }
+
+
+            OutputStream outputStream = mFtpClient.storeFileStream("ID_"+IdRadiobase+"/"+secondRemoteFile);
 
             int ancho = (int) secondLocalFile.length();
 
@@ -174,7 +192,7 @@ public class ConnectUploadAsync extends AsyncTask <Void,Integer,Boolean> {
     protected void onPostExecute(Boolean o) {
         super.onPostExecute(o);
         if(o){
-            Toast.makeText(contexto,"archivo trasferido !!!"+o, Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(contexto,"archivo trasferido !!!"+o, Toast.LENGTH_SHORT).show();
             ac.progressBar.setProgress(0);
             ac.text_Bytes.setText("Transmision Finalizada");
 

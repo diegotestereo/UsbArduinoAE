@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.laboratorio.usbarduino.Funciones.ConexionIP;
 
@@ -38,7 +37,7 @@ int alarma=4;// red electrica coratada ,, sistema en baterias
         //   manager.sendTextMessage("2235776581", null, "Sistema en Baterias", sentIntent, deliveryIntent);
 
 
-        Log.d(TAG,"IP: "+IP+" Puerto: "+Puerto+" idRadiobase: "+idRadiobase+" alarma: "+alarma);
+        Log.d(TAG,"IP: "+IP+" Puerto: "+Puerto+" idRadiobase: "+idRadiobase+" alarma: "+alarma+" bateria baja!!! ");
 
 
         ConexionIP ClienteTCP =new ConexionIP(IP,Puerto," "+idRadiobase+" "+alarma);

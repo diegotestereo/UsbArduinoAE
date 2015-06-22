@@ -41,8 +41,9 @@ public class ConexionIP extends Thread {
           out.println(msg);// Id REadiobase + Id alarma
 
             //Buffer the data coming from the input stream
-          //  final BufferedReader br = new BufferedReader(
-            //        new InputStreamReader(is));
+        //    InputStream is = socket.getInputStream();
+         //   final BufferedReader br = new BufferedReader(
+          //          new InputStreamReader(is));
 
             socket.close();
         } catch (NumberFormatException e) {
