@@ -112,12 +112,10 @@ public class MainActivity extends ActionBarActivity implements Runnable {
         LevantarXML();
         Botones();
 
-       usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
-
-
-
+        usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         IdRadiobase=Integer.parseInt(edit_IdRadio.getText().toString());
         IpPublica=edit_IP.getText().toString();
+
         BotonesEnabled(false);
         CAMARA_ON();
         Log.d(TAG, "OnCreate fin");
@@ -166,7 +164,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
     private void CAMARA_ON() {
         mCamera = getCameraInstance();
         mPreview = new CameraPreview(getApplicationContext(), mCamera);
-            preview.addView(mPreview);
+        preview.addView(mPreview);
 
     }
 
